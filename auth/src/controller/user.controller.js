@@ -24,6 +24,7 @@ const createUser = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
+        role: user.role,
       },
     };
     jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
@@ -55,6 +56,7 @@ const loginUser = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
+        role: user.role,
       },
     };
     jwt.sign(
