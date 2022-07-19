@@ -5,12 +5,6 @@ const categorySchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  categoryImage: {
-    type: String,
-  },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-  },
 });
 
 module.exports = mongoose.model("Category", categorySchema, "Categories");
