@@ -3,11 +3,15 @@ const bcrypt = require("bcryptjs");
 const sendMail = require("../services/sendMail");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
+const {
+  findUserById,
+  updatePassword,
+} = require("../repository/user.repository");
 
 const changePassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   try {
-    const user = await User.findById(req.user.id);
+    const user = await findUserById(req.user.id);
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
@@ -15,9 +19,7 @@ const changePassword = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
-    await user.save();
+    await updatePassword(req.user.id, newPassword);
     res.json({ msg: "Password changed successfully" });
   } catch (err) {
     console.log(err);
@@ -28,7 +30,7 @@ const changePassword = async (req, res) => {
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await User.findOne({ email });
+    const user = await findUserById(req.user.id);
     if (!user) {
       return res.status(400).json({
         error: "User not found",
@@ -64,11 +66,8 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const { password } = req.body;
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    const user = await User.findByIdAndUpdate(req.user.id, {
-      password: hashedPassword,
-    });
+    await updatePassword(req.user.id, password);
+
     res.json({ msg: "Password updated successfully" });
   } catch (err) {
     console.log(err);
