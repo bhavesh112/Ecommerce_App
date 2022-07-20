@@ -1,5 +1,8 @@
 const express = require("express");
-const { createProduct } = require("../controllers/product.controller");
+const {
+  createProduct,
+  getProduct,
+} = require("../controllers/product.controller");
 const router = express.Router();
 
 const adminAuth = require("../middlewares/auth");
@@ -16,6 +19,6 @@ router.post(
   createProduct
 );
 
-// router.get("/:slug",getProduct)
+router.get("/:slug", getProduct);
 
 module.exports = router;

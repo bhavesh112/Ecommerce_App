@@ -8,11 +8,6 @@ const pageSchema = mongoose.Schema({
       navigateTo: { type: String },
     },
   ],
-  categories: [
-    {
-      category_id: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
-    },
-  ],
 });
 
 module.exports = mongoose.model("Page", pageSchema);
