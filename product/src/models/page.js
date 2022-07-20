@@ -3,13 +3,14 @@ const mongoose = require("mongoose");
 const pageSchema = mongoose.Schema({
   banners: [
     {
+      name: { type: String, required: true },
       img: { type: String },
       navigateTo: { type: String },
     },
   ],
-  products: [
+  categories: [
     {
-      product_id: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+      category_id: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
     },
   ],
 });

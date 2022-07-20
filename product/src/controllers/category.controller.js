@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
-const CategoryModel = require("../../../category/src/models/category");
+const { default: slugify } = require("slugify");
+const CategoryModel = require("../models/category");
 
 const createCategory = async (req, res) => {
   const errors = validationResult(req);
@@ -7,7 +8,7 @@ const createCategory = async (req, res) => {
   if (errors.isEmpty()) {
     const exist = await CategoryModel.findOne({ name });
     if (!exist) {
-      await CategoryModel.create({ name });
+      await CategoryModel.create({ name, slug: slugify(name) });
       return res
         .status(201)
         .json({ message: "Your category has created successfully!" });
@@ -32,8 +33,17 @@ const deleteCategory = async (req, res) => {
     return res.status(500).json("Server internal error!");
   }
 };
-
+const getCategory = async (req, res) => {
+  try {
+    const categories = await CategoryModel.find({});
+    return res.status(200).json(categories);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json("Server internal error!");
+  }
+};
 module.exports = {
   deleteCategory,
   createCategory,
+  getCategory,
 };

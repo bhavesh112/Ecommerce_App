@@ -1,13 +1,19 @@
 const express = require("express");
 require("dotenv").config();
 const productRoutes = require("./routes/productRoutes");
+const pageRoutes = require("./routes/pageRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/product", productRoutes);
+
 app.use("/api/category", categoryRoutes);
+
+app.use("/api/page", pageRoutes);
+
 app.get("*", (req, res) => {
   const img = req.path.split("/");
 
