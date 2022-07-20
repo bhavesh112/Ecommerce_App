@@ -1,5 +1,5 @@
 const express = require("express");
-const { createProduct,getProduct } = require("../controllers/productController");
+const { createProduct } = require("../controllers/product.controller");
 const router = express.Router();
 const multer = require("multer");
 const shortid = require("shortid");
@@ -26,6 +26,6 @@ router.post(
   createProduct
 );
 
-router.get("/:slug",getProduct)
+// router.get("/:slug",getProduct)
 
 module.exports = router;

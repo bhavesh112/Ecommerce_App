@@ -1,26 +1,29 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const {
+  findUserbyEmail,
+  addUser,
+  findUserById,
+} = require("../repository/user.repository");
 
 // This is the function that will be called when the user clicks the "Sign Up" button.
 const createUser = async (req, res) => {
   try {
     const { email, password, name, role } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await findUserbyEmail(email);
     if (existingUser) {
       return res.status(400).json({
         error: "User already exists",
       });
     }
-    const user = new User({
+    const user = await addUser({
       email,
+      password,
       name,
+      role,
     });
-    if (role) user.role = role;
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-    await user.save();
     const payload = {
       user: {
         id: user.id,
@@ -44,7 +47,7 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await findUserbyEmail(email);
     if (!user) {
       return res.status(400).json({ msg: "User not found" });
     }
@@ -78,7 +81,7 @@ const loginUser = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await findUserById(req.user.id);
     res.json(user);
   } catch (err) {
     res.status(500).json({
