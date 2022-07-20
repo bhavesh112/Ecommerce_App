@@ -9,16 +9,9 @@ const pageSchema = mongoose.Schema({
   ],
   products: [
     {
-      img: { type: String },
-      navigateTo: { type: String },
+      product_id: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
     },
   ],
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Category",
-    required: true,
-    unique: true,
-  },
 });
 
 module.exports = mongoose.model("Page", pageSchema);
