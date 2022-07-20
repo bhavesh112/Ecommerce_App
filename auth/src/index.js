@@ -4,8 +4,8 @@ const start = async () => {
   try {
     await mongoose.connect("mongodb://localhost:27017/auth");
     console.log("Connected to MongoDB");
-    app.listen(3000, () => {
-      console.log("Listening on port 3000!!!!!!!!");
+    app.listen(3001, () => {
+      console.log("Listening on port 3001!");
     });
   } catch (err) {
     console.log(err);

@@ -8,6 +8,10 @@ const theme = createTheme({
     secondary: {
       main: "#00c87b",
     },
+    text: {
+      secondary: "#a1a1b6",
+      primary: "#0a0938",
+    },
   },
   components: {
     MuiAppBar: {
@@ -19,7 +23,16 @@ const theme = createTheme({
       },
     },
   },
-  typography: {},
+  typography: {
+    h4: {
+      fontSize: "1.5rem",
+      fontWeight: "600",
+    },
+    h3: {
+      fontSize: "2rem",
+      fontWeight: "600",
+    },
+  },
 });
 
 export default theme;

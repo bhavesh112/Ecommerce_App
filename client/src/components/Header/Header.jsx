@@ -11,8 +11,10 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import logo from "./../../assets/images/logo.svg";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 const Header = () => {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   return (
     <AppBar position='sticky'>
       <Container>
@@ -73,8 +75,22 @@ const Header = () => {
               gap: "20px",
             }}
           >
-            <Button variant='outlined'>Sign Up</Button>
-            <Button variant='contained'>Login</Button>
+            <Button
+              variant='outlined'
+              onClick={() => {
+                navigate("/register");
+              }}
+            >
+              Sign Up
+            </Button>
+            <Button
+              variant='contained'
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              Login
+            </Button>
           </Toolbar>
         </Toolbar>
       </Container>
