@@ -6,6 +6,7 @@ const {
   addCategory,
   getCategories,
   deleteCategory,
+  getPage,
 } = require("../controllers/page.controller");
 const adminAuth = require("../middlewares/auth");
 
@@ -17,11 +18,5 @@ router.post("/add-banner", upload.single("img"), adminAuth, addBanner);
 router.get("/get-banners", getBanners);
 
 router.delete("/delete-banner/:id", adminAuth, deleteBanner);
-
-router.post("/add-category", adminAuth, addCategory);
-
-router.post("/get-categories", getCategories);
-
-router.post("/delete-category", adminAuth, deleteCategory);
 
 module.exports = router;
