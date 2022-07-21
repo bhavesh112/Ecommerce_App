@@ -1,19 +1,17 @@
 const Cart = require("../models/cart");
+
 exports.addItemToCart = (req, res) => {
-  // res.json({message:'cart'});
   Cart.findOne({ user: req.user.id }).exec((error, cart) => {
-    //old cart
-    if (error) return res.status(201).json({ error });
+    if (error) return res.status(400).json({ error });
 
     if (cart) {
-      const exc_item = cart.cartItems.find(
-        (c) => c.product == req.body.cartItems.product
-      );
+      const product = req.body.cartItems.product;
+      const exc_item = cart.cartItems.find((c) => c.product == product);
       if (exc_item) {
         Cart.findOneAndUpdate(
           {
-            user: req.user._id,
-            "cartItems.product": req.body.cartItems.product,
+            user: req.user.id,
+            "cartItems.product": product,
           },
           {
             $set: {
@@ -34,7 +32,7 @@ exports.addItemToCart = (req, res) => {
           { user: req.user.id },
           {
             $push: {
-              cartItems: req.body.cartItems,
+              cartItems: [req.body.cartItems],
             },
           }
         ).exec((error, _cart) => {
@@ -46,9 +44,8 @@ exports.addItemToCart = (req, res) => {
       }
     } else {
       const cart = new Cart({
-        //create new cart
-        user: req.user._id,
-        cartItem: [req.body.cartItems],
+        user: req.user.id,
+        cartItems: [req.body.cartItems],
       });
       cart.save((error, cart) => {
         if (error) return res.status(400).json({ error });
