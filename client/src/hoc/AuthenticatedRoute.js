@@ -4,7 +4,7 @@ import { useGetUser } from "../services/auth.service";
 const AuthenticatedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useGetUser();
   if (!isAuthenticated && !isLoading) {
-    return <Navigate to='/' />;
+    return <Navigate to='/login' />;
   }
 
   return <>{children}</>;
