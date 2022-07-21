@@ -6,7 +6,9 @@ const jwt = require("jsonwebtoken");
 const {
   findUserById,
   updatePassword,
+  findUserbyEmail,
 } = require("../repository/user.repository");
+const { jwtSign } = require("../services/jwtSign");
 
 const changePassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
@@ -15,12 +17,20 @@ const changePassword = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
+    console.log(user);
     const isMatch = await bcrypt.compare(oldPassword, user.password);
     if (!isMatch) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
     await updatePassword(req.user.id, newPassword);
-    res.json({ msg: "Password changed successfully" });
+    const payload = {
+      user: {
+        id: user.id,
+        role: user.role,
+      },
+    };
+    const token = await jwtSign(payload);
+    res.status(200).json({ token });
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "Server error" });
@@ -30,7 +40,7 @@ const changePassword = async (req, res) => {
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await findUserById(req.user.id);
+    const user = await findUserbyEmail(email);
     if (!user) {
       return res.status(400).json({
         error: "User not found",
@@ -50,7 +60,7 @@ const forgotPassword = async (req, res) => {
         const info = await sendMail({
           to: email,
           subject: "Reset Password",
-          text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account. Please click on the following link, or paste this into your browser to complete the process: http://localhost:3000/reset-password/${token}`,
+          html: `You are receiving this email because you (or someone else) have requested the reset of the password for your account. Please click on the following link, or paste this into your browser to complete the process: <a href="http://localhost:3000/reset-password/${token}">Reset Password</a>`,
         });
         res.json({ link: nodemailer.getTestMessageUrl(info) });
       }
@@ -66,9 +76,17 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const { password } = req.body;
+    const user = await findUserById(req.user.id);
     await updatePassword(req.user.id, password);
 
-    res.json({ msg: "Password updated successfully" });
+    const payload = {
+      user: {
+        id: user.id,
+        role: user.role,
+      },
+    };
+    const token = await jwtSign(payload);
+    res.status(200).json({ token });
   } catch (err) {
     console.log(err);
     res.status(500).json({

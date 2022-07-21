@@ -5,7 +5,9 @@ const {
   findUserbyEmail,
   addUser,
   findUserById,
+  findUserByIdwithoutPassword,
 } = require("../repository/user.repository");
+const { jwtSign } = require("../services/jwtSign");
 
 // This is the function that will be called when the user clicks the "Sign Up" button.
 const createUser = async (req, res) => {
@@ -30,10 +32,8 @@ const createUser = async (req, res) => {
         role: user.role,
       },
     };
-    jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
-      if (err) throw err;
-      res.status(201).json({ token });
-    });
+    const token = await jwtSign(payload);
+    res.status(201).json({ token });
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -62,15 +62,8 @@ const loginUser = async (req, res) => {
         role: user.role,
       },
     };
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: 360000 },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
+    const token = await jwtSign(payload);
+    res.status(200).json({ token });
   } catch (err) {
     console.log(err.message);
     res.status(500).send("Server Error");
@@ -81,7 +74,7 @@ const loginUser = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const user = await findUserById(req.user.id);
+    const user = await findUserByIdwithoutPassword(req.user.id);
     res.json(user);
   } catch (err) {
     res.status(500).json({

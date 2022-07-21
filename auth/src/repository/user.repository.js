@@ -11,13 +11,20 @@ const findUserbyEmail = async (email) => {
 
 const findUserById = async (id) => {
   try {
+    const user = await User.findById(id);
+    return user;
+  } catch (err) {
+    console.log(err);
+  }
+};
+const findUserByIdwithoutPassword = async (id) => {
+  try {
     const user = await User.findById(id).select("-password");
     return user;
   } catch (err) {
     console.log(err);
   }
 };
-
 const addUser = async ({ email, name, password, role }) => {
   try {
     const user = new User({
@@ -43,5 +50,6 @@ module.exports = {
   findUserbyEmail,
   addUser,
   findUserById,
+  findUserByIdwithoutPassword,
   updatePassword,
 };

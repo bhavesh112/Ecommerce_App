@@ -7,14 +7,82 @@ import {
   Box,
   IconButton,
   Zoom,
+  Avatar,
+  Skeleton,
+  Badge,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import logo from "./../../assets/images/logo.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useGetUser } from "../../services/auth.service";
+import UserMenu from "../UserMenu/UserMenu";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+const AuthenticatedHeader = () => {
+  const { user, isLoading } = useGetUser();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  if (isLoading) return <Skeleton width='200px' variant='text' />;
+
+  return (
+    <>
+      <Button variant='text' onClick={handleClick}>
+        <Avatar
+          sx={{
+            mr: 1,
+            height: "30px",
+            width: "30px",
+          }}
+        >
+          {user.name.charAt(0)}
+        </Avatar>
+        {user.name.split(" ")[0]}
+      </Button>
+      <IconButton color='primary'>
+        <Badge badgeContent={"0"} color='secondary'>
+          <ShoppingCartIcon />
+        </Badge>
+      </IconButton>
+      <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
+    </>
+  );
+};
+const NotAuthenticatedHeader = () => {
+  const navigate = useNavigate();
+  return (
+    <>
+      <Button
+        variant='outlined'
+        onClick={() => {
+          navigate("/register");
+        }}
+      >
+        Sign Up
+      </Button>
+      <Button
+        variant='contained'
+        onClick={() => {
+          navigate("/login");
+        }}
+      >
+        Login
+      </Button>
+    </>
+  );
+};
 const Header = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+
+  const { isAuthenticated, user } = useGetUser();
+  console.log(user, isAuthenticated);
   return (
     <AppBar position='sticky'>
       <Container>
@@ -75,22 +143,11 @@ const Header = () => {
               gap: "20px",
             }}
           >
-            <Button
-              variant='outlined'
-              onClick={() => {
-                navigate("/register");
-              }}
-            >
-              Sign Up
-            </Button>
-            <Button
-              variant='contained'
-              onClick={() => {
-                navigate("/login");
-              }}
-            >
-              Login
-            </Button>
+            {isAuthenticated ? (
+              <AuthenticatedHeader />
+            ) : (
+              <NotAuthenticatedHeader />
+            )}
           </Toolbar>
         </Toolbar>
       </Container>

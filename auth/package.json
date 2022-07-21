@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "test": "jest --watchAll --verbose --no-cache"
+    "test": "jest --watchAll --verbose --no-cache",
+    "dev": "nodemon src/index.js"
   },
   "jest": {
     "testEnvironment": "node",

@@ -5,7 +5,7 @@ export const useGetPageData = () => {
   const { data, isLoading } = useQuery({
     queryKey: "pageData",
     queryFn: () => {
-      return api.get("http://localhost:8000/api/page/get-banners");
+      return api.get("/page/get-banners");
     },
   });
 
@@ -16,7 +16,7 @@ export const useGetCategoryData = () => {
   const { data, isLoading } = useQuery({
     queryKey: "categoryData",
     queryFn: () => {
-      return api.get("http://localhost:8000/api/category");
+      return api.get("/category");
     },
   });
   console.log(data?.data);

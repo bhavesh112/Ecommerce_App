@@ -1,19 +1,21 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api/api";
 
 export const useRegisterUser = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(
     (req) => {
-      return api.post("http://localhost:3001/api/users/signup", req);
+      return api.post("/users/signup", req);
     },
     {
       onSuccess: (data) => {
         localStorage.setItem("token", data.data.token);
         toast.success("Successfully registered");
         navigate("/");
+        queryClient.invalidateQueries(["user"]);
       },
       onError: (err) => {
         console.log(err);
@@ -28,30 +30,102 @@ export const useRegisterUser = () => {
 };
 
 export const useGetUser = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: "user",
-    queryFn: () => {
-      return api.get("http://localhost:3001/api/users/signin");
-    },
+  const { data, isLoading, isError } = useQuery(["user"], async () => {
+    return api.get("/users/signin");
   });
-
-  return { user: data?.data, isLoading };
+  if (isError) {
+    return {
+      isAuthenticated: false,
+      user: null,
+      isLoading,
+    };
+  }
+  return {
+    user: data?.data,
+    isLoading,
+    isAuthenticated: data?.status === 200,
+  };
 };
 
 export const useLoginUser = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(
     (req) => {
-      return api.post("http://localhost:3001/api/users/signin", req);
+      return api.post("/users/signin", req);
     },
     {
       onSuccess: (data) => {
         localStorage.setItem("token", data.data.token);
         toast.success("Successfully logged in");
         navigate("/");
+        queryClient.invalidateQueries(["user"]);
+      },
+      onError: (err) => {
+        toast.error(err.response.data.msg, {
+          toastId: "login-error",
+        });
       },
     }
   );
 
   return { login: mutate, isLoggingIn: isLoading };
+};
+
+export const useChangePassword = () => {
+  const navigate = useNavigate();
+  const { mutate, isLoading } = useMutation(
+    (req) => {
+      return api.patch("/users/change-password", req);
+    },
+    {
+      onSuccess: (data) => {
+        localStorage.setItem("token", data.data.token);
+        toast.success("Successfully changed password");
+        navigate("/");
+      },
+      onError: (err) => {
+        console.log(err);
+        toast.error(err.response.data.msg, {
+          toastId: "change-password-error",
+        });
+      },
+    }
+  );
+
+  return { changePassword: mutate, isChangingPassword: isLoading };
+};
+
+export const useForgotPassword = () => {
+  const { mutate, isLoading } = useMutation(
+    (req) => {
+      return api.post("/users/forgot-password", req);
+    },
+    {
+      onSuccess: (data) => {
+        window.open(data.data.link);
+        toast.success("Email sent to your email address");
+      },
+    }
+  );
+
+  return { forgotPassword: mutate, isSendingMail: isLoading };
+};
+
+export const useResetPassword = () => {
+  const navigate = useNavigate();
+  const { mutate, isLoading } = useMutation(
+    (req) => {
+      return api.patch("/users/forgot-password", req);
+    },
+    {
+      onSuccess: (data) => {
+        localStorage.setItem("token", data.data.token);
+        toast.success("Successfully reset password");
+        navigate("/");
+      },
+    }
+  );
+
+  return { resetPassword: mutate, isResettingPassword: isLoading };
 };
