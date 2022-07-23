@@ -10,7 +10,6 @@ const adminAuth = (req, res, next) => {
       token.replace("Bearer ", ""),
       process.env.JWT_SECRET
     );
-    console.log(decoded.user);
     if (decoded.user.role !== "admin") {
       return res
         .status(401)

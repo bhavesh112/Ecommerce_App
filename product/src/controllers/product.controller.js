@@ -80,8 +80,66 @@ const getProduct = (req, res) => {
     }
   });
 };
+const deleteProduct = async (req, res) =>  {
+
+  try {
+    await Product.findByIdAndDelete(req.params.id)
+    res.json({msg: "Deleted a Product"})
+} catch (err) {
+    return res.status(500).json({msg: err.message})
+}
+}
+
+   const updateProduct=async(req, res) =>{
+
+
+    try {
+        const {name, price, description, content, category} = req.body;
+
+        let productPicture = [];
+
+        if (req.files && req.files.length > 0) {
+          productPicture = req.files.map((file) => {
+            return { img: file.filename, path: file.path };
+          });
+        }
+        await Product.findOneAndUpdate({_id: req.params.id}, {
+            name: name.toLowerCase(), price, description, content,productPicture , category
+        })
+  
+        res.json({msg: "Updated a Product"})
+    } catch (err) {
+        return res.status(500).json({msg: err.message})
+    }
+  }
+
 
 module.exports = {
   createProduct,
   getProduct,
+  deleteProduct,
+  updateProduct
 };
+
+
+
+
+
+
+
+
+
+async(req, res) =>{
+  try {
+      const {name, price, description, content, productPicture, category} = req.body;
+      if(!iProductPicture) return res.status(400).json({msg: "No image upload"})
+
+      await Products.findOneAndUpdate({_id: req.params.id}, {
+          name: name.toLowerCase(), price, description, content,productPicture , category
+      })
+
+      res.json({msg: "Updated a Product"})
+  } catch (err) {
+      return res.status(500).json({msg: err.message})
+  }
+}
