@@ -8,12 +8,6 @@ const insertBanner = async (banner) => {
       banners: [banner],
     });
   } else {
-    const existingBanners = await Page.find({
-      name: banner.name,
-    });
-    if (existingBanners.length > 0) {
-      throw new Error("Banner already exists");
-    }
     page.banners.push(banner);
     await page.save();
   }

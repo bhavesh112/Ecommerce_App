@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetUser } from "../../services/auth.service";
 import UserMenu from "../UserMenu/UserMenu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
 const AuthenticatedHeader = () => {
   const { user, isLoading } = useGetUser();
 

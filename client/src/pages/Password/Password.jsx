@@ -1,15 +1,20 @@
 import { Form, Formik } from "formik";
 import CommonAuthWrapper from "../../components/CommonAuthWrapper/CommonAuthWrapper";
 import * as yup from "yup";
+import { useEffect } from "react";
 import TextInput from "../../components/TextInput/TextInput";
 import { Button } from "@mui/material";
 import {
   useChangePassword,
   useForgotPassword,
+  useGetUser,
   useResetPassword,
 } from "../../services/auth.service";
 import { useParams } from "react-router-dom";
+
 const Password = ({ type }) => {
+  const { isLoading } = useGetUser();
+  if (isLoading) return <div>Loading...</div>;
   if (type === "forgot") {
     return (
       <>
@@ -69,7 +74,10 @@ const ForgotPassword = () => {
 const ResetPassword = () => {
   const { resetPassword, isResettingPassword } = useResetPassword();
   const { token } = useParams();
-  localStorage.setItem("token", token);
+  useEffect(() => {
+    localStorage.removeItem("token");
+    localStorage.setItem("reset-token", token);
+  }, []);
   return (
     <>
       <CommonAuthWrapper>
