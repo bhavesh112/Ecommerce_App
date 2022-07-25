@@ -33,13 +33,16 @@ const AddProduct = ({
             quantity: yup.number().required("Quantity is required"),
           })}
           onSubmit={(values, helpers) => {
-            helpers.resetForm();
+            // helpers.resetForm();
             const formData = new FormData();
             formData.append("name", values.name);
             formData.append("price", values.price);
             formData.append("description", values.description);
             formData.append("category", values.category._id);
-            formData.append("productPicture", values.productPicture[0]);
+            console.log(values.productPicture);
+            for (let i = 0; i < values.productPicture.length; i++) {
+              formData.append("productPicture", values.productPicture[i]);
+            }
             formData.append("quantity", values.quantity);
             addProduct(formData);
           }}
@@ -50,7 +53,11 @@ const AddProduct = ({
             <TextInput name='description' label='Description' />
             <Select name='category' label='Category' options={categoryData} />
             <TextInput name='quantity' label='Quantity' type='number' />
-            <FileUpload name='productPicture' label='Add Product Images' />
+            <FileUpload
+              name='productPicture'
+              label='Add Product Images'
+              multiple
+            />
             <Button variant='contained' type='submit'>
               Add Product
             </Button>

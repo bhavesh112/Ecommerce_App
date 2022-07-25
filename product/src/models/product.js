@@ -5,7 +5,7 @@ const productSchema = mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    index:true,
+    index: true,
   },
   slug: {
     type: String,
@@ -20,7 +20,7 @@ const productSchema = mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    index:true,
+    index: true,
   },
   quantity: {
     type: Number,
@@ -47,6 +47,6 @@ const productSchema = mongoose.Schema({
   updatedAt: Date,
 });
 
-productSchema.index({name:"text",description:"text"})
+productSchema.index({ name: "text", description: "text" });
 
 module.exports = mongoose.model("Product", productSchema, "Products");

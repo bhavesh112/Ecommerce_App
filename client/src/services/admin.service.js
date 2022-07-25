@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 import api from "../api/api";
 
@@ -75,17 +76,41 @@ export const useDeleteCategoryMutation = () => {
 
 export const useAddProductMutation = () => {
   const queryClient = useQueryClient();
+
   const { mutate, isLoading } = useMutation(
     (req) => api.post("/product/create/", req),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["productData"]);
+        queryClient.invalidateQueries(["products"]);
+        queryClient
+          .getQueryCache()
+          .findAll(["products"])
+          .forEach((query) => query.reset());
+        toast.success("Product added successfully");
       },
     }
   );
 
   return {
     addProduct: mutate,
+    isLoading,
+  };
+};
+
+export const useDeleteProductMutation = () => {
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutation(
+    (req) => api.delete("/product/delete/" + req),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["products"]);
+        toast.success("Product deleted successfully");
+      },
+    }
+  );
+
+  return {
+    deleteProduct: mutate,
     isLoading,
   };
 };

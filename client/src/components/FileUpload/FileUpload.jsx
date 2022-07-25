@@ -2,7 +2,7 @@ import { Button, FormHelperText } from "@mui/material";
 import { Box } from "@mui/system";
 import { useFormikContext } from "formik";
 
-const FileUpload = ({ name, label }) => {
+const FileUpload = ({ name, label, multiple }) => {
   const { setFieldValue, values, errors, touched, handleBlur } =
     useFormikContext();
 
@@ -27,6 +27,7 @@ const FileUpload = ({ name, label }) => {
             onChange={(event) => {
               setFieldValue(name, event.target.files);
             }}
+            multiple={multiple}
           />
         </Button>
         {errors[name] && touched[name] && (
