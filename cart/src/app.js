@@ -5,6 +5,6 @@ const cartRoutes = require("./routes/cart");
 const app = express();
 
 app.use(bodyParser.json());
-app.use("/api/user/cart", cartRoutes);
+app.use("/api/cart", cartRoutes);
 
 module.exports = { app };
