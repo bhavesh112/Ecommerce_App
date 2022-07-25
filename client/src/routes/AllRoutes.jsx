@@ -5,6 +5,8 @@ import Home from "../pages/Home/Home";
 import Register from "../pages/Register/Register";
 import { Route, Routes } from "react-router-dom";
 import AuthenticatedRoute from "../hoc/AuthenticatedRoute";
+import AdminRoute from "../hoc/AdminRoute";
+import Settings from "../pages/Settings/Settings";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -47,6 +49,14 @@ const AllRoutes = () => {
           <NotAuthenticatedRoute>
             <Password type='forgot' />
           </NotAuthenticatedRoute>
+        }
+      />
+      <Route
+        path='/settings'
+        element={
+          <AdminRoute>
+            <Settings />
+          </AdminRoute>
         }
       />
     </Routes>

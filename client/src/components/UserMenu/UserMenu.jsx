@@ -1,15 +1,19 @@
 import { ListItemIcon, Menu, MenuItem } from "@mui/material";
 import Logout from "@mui/icons-material/Logout";
 import Key from "@mui/icons-material/Key";
+import Settings from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { useGetUser } from "../../services/auth.service";
 const UserMenu = ({ anchorEl, open, handleClose }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { isAdmin } = useGetUser();
   const logout = () => {
     localStorage.removeItem("token");
     queryClient.invalidateQueries(["user"]);
   };
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -40,6 +44,18 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
+      {isAdmin && (
+        <MenuItem
+          onClick={() => {
+            navigate("/settings");
+          }}
+        >
+          <ListItemIcon>
+            <Settings fontSize='small' />
+          </ListItemIcon>
+          Settings
+        </MenuItem>
+      )}
       <MenuItem
         onClick={() => {
           navigate("/change-password");

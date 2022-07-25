@@ -44,6 +44,7 @@ export const useGetUser = () => {
     user: data?.data,
     isLoading,
     isAuthenticated: data?.status === 200,
+    isAdmin: data?.data?.role === "admin",
   };
 };
 
@@ -116,13 +117,18 @@ export const useResetPassword = () => {
   const navigate = useNavigate();
   const { mutate, isLoading } = useMutation(
     (req) => {
-      return api.patch("/users/forgot-password", req);
+      return api.patch("/users/forgot-password", req, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("reset-token")}`,
+        },
+      });
     },
     {
       onSuccess: (data) => {
         localStorage.setItem("token", data.data.token);
         toast.success("Successfully reset password");
         navigate("/");
+        localStorage.deleteItem("reset-token");
       },
     }
   );

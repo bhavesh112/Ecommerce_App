@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetUser } from "../../services/auth.service";
 import UserMenu from "../UserMenu/UserMenu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
 const AuthenticatedHeader = () => {
   const { user, isLoading } = useGetUser();
 
@@ -94,6 +95,9 @@ const Header = () => {
           <Box
             sx={{
               cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate("/");
             }}
           >
             <img src={logo} alt='Emart' width='130px' />
