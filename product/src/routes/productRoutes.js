@@ -4,6 +4,7 @@ const {
   getProduct,
   deleteProduct,
   updateProduct,
+  getProductbyfeature,
 } = require("../controllers/product.controller");
 const router = express.Router();
 
@@ -21,7 +22,10 @@ router.post(
   createProduct
 );
 
+router.get("/feature",getProductbyfeature)
+
 router.get("/:slug", getProduct);
+
 
 router.delete("/delete/:id",adminAuth, deleteProduct)
 

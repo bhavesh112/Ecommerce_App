@@ -80,6 +80,57 @@ const getProduct = (req, res) => {
     }
   });
 };
+
+class APIfeatures {
+  constructor(query, queryString){
+      this.query = query;
+      this.queryString = queryString;
+  }
+  search() {
+    const keyword = this.queryString.keyword
+      ? {
+          name: {
+            $regex: this.queryString.keyword,
+            $options: "i",
+          },
+        }
+      : {};
+
+    this.query = this.query.find({ ...keyword });
+    return this;
+  }
+
+//   paginating(){
+//     const page = this.queryString.page * 1 || 1
+//     const limit = this.queryString.limit * 1 || 9
+//     const skip = (page - 1) * limit;
+//     this.query = this.query.skip(skip).limit(limit)
+//     return this;
+// }
+}
+
+const getProductbyfeature= async(req, res) =>{
+      try {
+      const  product = await Product
+    .find(
+        { $text : { $search : req.query.keyword } }
+    )
+      //   console.log(req.query)
+      //     const features = new APIfeatures(Product.find(), req.query)
+      //     .search()
+      //     const product = await features.query
+
+          res.json({
+              status: 'success',
+              result: product.length,
+              product: product
+          })
+          
+      } catch (err) {
+          return res.status(500).json({msg: err.message})
+      }
+  }
+
 const deleteProduct = async (req, res) =>  {
 
   try {
@@ -117,6 +168,7 @@ const deleteProduct = async (req, res) =>  {
 module.exports = {
   createProduct,
   getProduct,
+  getProductbyfeature,
   deleteProduct,
   updateProduct
 };
