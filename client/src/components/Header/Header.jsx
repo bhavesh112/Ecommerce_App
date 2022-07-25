@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetUser } from "../../services/auth.service";
 import UserMenu from "../UserMenu/UserMenu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Form, Formik } from "formik";
 
 const AuthenticatedHeader = () => {
   const { user, isLoading } = useGetUser();
@@ -103,44 +104,54 @@ const Header = () => {
             <img src={logo} alt='Emart' width='130px' />
           </Box>
           <Box position={"relative"}>
-            <TextField
-              variant='outlined'
-              placeholder='Search for products, brands and more'
-              value={search}
-              name='search'
-              onChange={(e) => setSearch(e.target.value)}
-              sx={{
-                width: "360px",
-                input: {
-                  height: "42px",
-                  boxSizing: "border-box",
-                  border: "2px solid",
-                  borderColor: "primary.main",
-                  borderRadius: "20px",
-                  pr: "40px",
-                },
-                fieldset: {
-                  border: "none",
-                },
-              }}
-            />
-            <Zoom in={Boolean(search)}>
-              <IconButton
-                color='primary'
-                sx={{
-                  position: "absolute",
-                  right: "0",
-                  top: "1px",
-                  backgroundColor: "primary.main",
-                  color: "white",
-                  "&:hover": {
-                    backgroundColor: "primary.dark",
-                  },
+            <Formik>
+              <Form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  navigate(`/search?q=${search}`);
                 }}
               >
-                <SearchIcon />
-              </IconButton>
-            </Zoom>
+                <TextField
+                  variant='outlined'
+                  placeholder='Search for products, brands and more'
+                  value={search}
+                  name='q'
+                  onChange={(e) => setSearch(e.target.value)}
+                  sx={{
+                    width: "360px",
+                    input: {
+                      height: "42px",
+                      boxSizing: "border-box",
+                      border: "2px solid",
+                      borderColor: "primary.main",
+                      borderRadius: "20px",
+                      pr: "40px",
+                    },
+                    fieldset: {
+                      border: "none",
+                    },
+                  }}
+                />
+                <Zoom in={Boolean(search)}>
+                  <IconButton
+                    color='primary'
+                    sx={{
+                      position: "absolute",
+                      right: "0",
+                      top: "1px",
+                      backgroundColor: "primary.main",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: "primary.dark",
+                      },
+                    }}
+                    type='submit'
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </Zoom>
+              </Form>
+            </Formik>
           </Box>
           <Toolbar
             sx={{

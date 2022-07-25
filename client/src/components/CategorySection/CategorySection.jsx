@@ -21,12 +21,12 @@ const CategorySection = ({ category }) => {
 };
 const ProductSection = ({ category_id }) => {
   const { products } = useGetProductsByCategory(category_id);
-  if (!products) return null;
+  if (!products || !products.length) return null;
   return (
     <>
       {_.chunk(products, 4)[0].map((product) => (
         <>
-          <ProductCard product={product} />
+          <ProductCard key={product._id} product={product} />
         </>
       ))}
     </>

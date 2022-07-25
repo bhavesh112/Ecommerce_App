@@ -43,7 +43,7 @@ const Home = () => {
         </Container>
       </Box>
       {categoryData.map((category) => (
-        <CategorySection category={category} />
+        <CategorySection key={category._id} category={category} />
       ))}
     </>
   );

@@ -1,3 +1,4 @@
+import Delete from "@mui/icons-material/Delete";
 import {
   Box,
   Button,
@@ -7,23 +8,48 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  IconButton,
   Typography,
 } from "@mui/material";
+import { useDeleteProductMutation } from "../../services/admin.service";
+import { useGetUser } from "../../services/auth.service";
 
 const ProductCard = ({ product }) => {
+  const { isAdmin } = useGetUser();
+  const { deleteProduct } = useDeleteProductMutation();
   if (!product) return null;
+
   return (
     <>
       <Grid item md={3}>
         <Card
-        //   sx={{
-        //     "&:hover": {
-        //       "& .add-to-cart": {
-        //         transform: "translateY(0)",
-        //       },
-        //     },
-        //   }}
+          //   sx={{
+          //     "&:hover": {
+          //       "& .add-to-cart": {
+          //         transform: "translateY(0)",
+          //       },
+          //     },
+          //   }}
+          sx={{
+            position: "relative",
+          }}
         >
+          {isAdmin && (
+            <IconButton
+              color='error'
+              sx={{
+                position: "absolute",
+                background: "white",
+                right: "10px",
+                top: "10px",
+              }}
+              onClick={() => {
+                deleteProduct(product._id);
+              }}
+            >
+              <Delete />
+            </IconButton>
+          )}
           <Box
             width='100%'
             sx={{
@@ -51,7 +77,19 @@ const ProductCard = ({ product }) => {
             >
               {product.name}
             </Typography>
-            <Typography variant='body2' fontSize='14px' align='center' mb={1}>
+            <Typography
+              variant='body2'
+              fontSize='14px'
+              align='center'
+              mb={1}
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: "3",
+                WebkitBoxOrient: "vertical",
+              }}
+            >
               {product.description}
             </Typography>
             <Typography

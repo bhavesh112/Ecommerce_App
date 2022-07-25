@@ -7,10 +7,12 @@ import { Route, Routes } from "react-router-dom";
 import AuthenticatedRoute from "../hoc/AuthenticatedRoute";
 import AdminRoute from "../hoc/AdminRoute";
 import Settings from "../pages/Settings/Settings";
+import ProductPage from "../pages/ProductPage/ProductPage";
 const AllRoutes = () => {
   return (
     <Routes>
       <Route path='/' element={<Home />} />
+      <Route path='/search' element={<ProductPage />} />
       <Route
         path='/register'
         element={
