@@ -86,7 +86,6 @@ export const useAddProductMutation = () => {
           .getQueryCache()
           .findAll(["products"])
           .forEach((query) => query.reset());
-
         toast.success("Product added successfully");
       },
     }

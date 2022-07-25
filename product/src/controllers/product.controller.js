@@ -40,93 +40,94 @@ const getProduct = (req, res) => {
     }
 
     if (category) {
-      Product.find({ category: category._id }).exec((error, products) => {
-        if (error) {
-          return res.status(400).json({ error });
-        }
-
-        if (category.slug) {
-          if (products.length > 0) {
-            res.status(200).json({
-              products,
-              priceRange: {
-                under5k: 5000,
-                under10k: 10000,
-                under15k: 15000,
-                under20k: 20000,
-                under30k: 30000,
-                above30k: 30000,
-              },
-              productsByPrice: {
-                under5k: products.filter((product) => product.price <= 5000),
-                under10k: products.filter(
-                  (product) => product.price > 5000 && product.price <= 10000
-                ),
-                under15k: products.filter(
-                  (product) => product.price > 10000 && product.price <= 15000
-                ),
-                under20k: products.filter(
-                  (product) => product.price > 15000 && product.price <= 20000
-                ),
-                under30k: products.filter(
-                  (product) => product.price > 20000 && product.price <= 30000
-                ),
-                above30k: products.filter((product) => product.price > 30000),
-              },
-            });
-          } else {
-            res.status(200).json({ products: [] });
+      Product.find({ category: category._id })
+        .populate("category")
+        .exec((error, products) => {
+          if (error) {
+            return res.status(400).json({ error });
           }
-        } else {
-          res.status(200).json({ products });
-        }
-      });
+
+          if (category.slug) {
+            if (products.length > 0) {
+              res.status(200).json({
+                products,
+                priceRange: {
+                  "<= 5000": "under5k",
+                  "5001 - 10,000": "under10k",
+                  "10,001 - 15,000": "under15k",
+                  "15,001 - 20,000": "under20k",
+                  "20,001 - 30,000": "under30k",
+                  "> 30000": "above30k",
+                },
+                productsByPrice: {
+                  under5k: products.filter((product) => product.price <= 5000),
+                  under10k: products.filter(
+                    (product) => product.price > 5000 && product.price <= 10000
+                  ),
+                  under15k: products.filter(
+                    (product) => product.price > 10000 && product.price <= 15000
+                  ),
+                  under20k: products.filter(
+                    (product) => product.price > 15000 && product.price <= 20000
+                  ),
+                  under30k: products.filter(
+                    (product) => product.price > 20000 && product.price <= 30000
+                  ),
+                  above30k: products.filter((product) => product.price > 30000),
+                },
+              });
+            } else {
+              res.status(200).json({ products: [] });
+            }
+          } else {
+            res.status(200).json({ products });
+          }
+        });
     }
   });
 };
-
-class APIfeatures {
-  constructor(query, queryString) {
-    this.query = query;
-    this.queryString = queryString;
+const getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.product_id).populate(
+      "category"
+    );
+    res.json({ product });
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
   }
-  search() {
-    const keyword = this.queryString.keyword
-      ? {
-          name: {
-            $regex: this.queryString.keyword,
-            $options: "i",
-          },
-        }
-      : {};
-
-    this.query = this.query.find({ ...keyword });
-    return this;
-  }
-
-  //   paginating(){
-  //     const page = this.queryString.page * 1 || 1
-  //     const limit = this.queryString.limit * 1 || 9
-  //     const skip = (page - 1) * limit;
-  //     this.query = this.query.skip(skip).limit(limit)
-  //     return this;
-  // }
-}
-
+};
 const getProductbyfeature = async (req, res) => {
   try {
-    const product = await Product.find({
+    const products = await Product.find({
       $text: { $search: req.query.keyword },
-    });
-    //   console.log(req.query)
-    //     const features = new APIfeatures(Product.find(), req.query)
-    //     .search()
-    //     const product = await features.query
+    }).populate("category");
 
     res.json({
-      status: "success",
-      result: product.length,
-      product: product,
+      products,
+      priceRange: {
+        "<= 5000": "under5k",
+        "5001 - 10,000": "under10k",
+        "10,001 - 15,000": "under15k",
+        "15,001 - 20,000": "under20k",
+        "20,001 - 30,000": "under30k",
+        "> 30000": "above30k",
+      },
+      productsByPrice: {
+        under5k: products.filter((product) => product.price <= 5000),
+        under10k: products.filter(
+          (product) => product.price > 5000 && product.price <= 10000
+        ),
+        under15k: products.filter(
+          (product) => product.price > 10000 && product.price <= 15000
+        ),
+        under20k: products.filter(
+          (product) => product.price > 15000 && product.price <= 20000
+        ),
+        under30k: products.filter(
+          (product) => product.price > 20000 && product.price <= 30000
+        ),
+        above30k: products.filter((product) => product.price > 30000),
+      },
     });
   } catch (err) {
     return res.status(500).json({ msg: err.message });
@@ -177,6 +178,7 @@ module.exports = {
   getProductbyfeature,
   deleteProduct,
   updateProduct,
+  getProductById,
 };
 
 async (req, res) => {

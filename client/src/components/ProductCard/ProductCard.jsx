@@ -11,14 +11,15 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { useDeleteProductMutation } from "../../services/admin.service";
 import { useGetUser } from "../../services/auth.service";
 
 const ProductCard = ({ product }) => {
   const { isAdmin } = useGetUser();
   const { deleteProduct } = useDeleteProductMutation();
+  const navigate = useNavigate();
   if (!product) return null;
-
   return (
     <>
       <Grid item md={3}>
@@ -30,8 +31,16 @@ const ProductCard = ({ product }) => {
           //       },
           //     },
           //   }}
+          onClick={() => {
+            navigate(`/product/${product._id}`);
+          }}
           sx={{
             position: "relative",
+            cursor: "pointer",
+            height: "100%",
+            "&:hover": {
+              boxShadow: 5,
+            },
           }}
         >
           {isAdmin && (
@@ -74,6 +83,11 @@ const ProductCard = ({ product }) => {
               fontSize='20px'
               align='center'
               fontWeight={"600"}
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
             >
               {product.name}
             </Typography>
@@ -112,6 +126,10 @@ const ProductCard = ({ product }) => {
             <CardActions
               sx={{
                 padding: 0,
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+                justifyContent: "flex-end",
               }}
             >
               <Button fullWidth color='secondary' variant='contained'>

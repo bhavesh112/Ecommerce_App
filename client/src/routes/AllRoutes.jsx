@@ -8,11 +8,16 @@ import AuthenticatedRoute from "../hoc/AuthenticatedRoute";
 import AdminRoute from "../hoc/AdminRoute";
 import Settings from "../pages/Settings/Settings";
 import ProductPage from "../pages/ProductPage/ProductPage";
+import ProductSearch from "../pages/ProductPage/ProductSearch";
+import ProductCategory from "../pages/ProductPage/ProductCategory";
+import SingleProduct from "../pages/SingleProduct/SingleProduct";
 const AllRoutes = () => {
   return (
     <Routes>
       <Route path='/' element={<Home />} />
-      <Route path='/search' element={<ProductPage />} />
+      <Route path='/search' element={<ProductSearch />} />
+      <Route path='/products/:category_id' element={<ProductCategory />} />
+      <Route path='/product/:product_id' element={<SingleProduct />} />
       <Route
         path='/register'
         element={
