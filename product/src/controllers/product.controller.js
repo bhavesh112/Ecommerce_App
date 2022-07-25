@@ -33,8 +33,8 @@ const createProduct = (req, res) => {
 };
 
 const getProduct = (req, res) => {
-  const { slug } = req.params;
-  Category.findOne({ slug: slug }).exec((error, category) => {
+  const { category_id } = req.params;
+  Category.findById(category_id).exec((error, category) => {
     if (error) {
       return res.status(400).json({ error });
     }
@@ -45,7 +45,7 @@ const getProduct = (req, res) => {
           return res.status(400).json({ error });
         }
 
-        if (category.type) {
+        if (category.slug) {
           if (products.length > 0) {
             res.status(200).json({
               products,
@@ -55,6 +55,7 @@ const getProduct = (req, res) => {
                 under15k: 15000,
                 under20k: 20000,
                 under30k: 30000,
+                above30k: 30000,
               },
               productsByPrice: {
                 under5k: products.filter((product) => product.price <= 5000),
@@ -70,8 +71,11 @@ const getProduct = (req, res) => {
                 under30k: products.filter(
                   (product) => product.price > 20000 && product.price <= 30000
                 ),
+                above30k: products.filter((product) => product.price > 30000),
               },
             });
+          } else {
+            res.status(400).json({ msg: "No products found" });
           }
         } else {
           res.status(200).json({ products });
@@ -80,66 +84,72 @@ const getProduct = (req, res) => {
     }
   });
 };
-const deleteProduct = async (req, res) =>  {
-
+const deleteProduct = async (req, res) => {
   try {
-    await Product.findByIdAndDelete(req.params.id)
-    res.json({msg: "Deleted a Product"})
-} catch (err) {
-    return res.status(500).json({msg: err.message})
-}
-}
-
-   const updateProduct=async(req, res) =>{
-
-
-    try {
-        const {name, price, description, content, category} = req.body;
-
-        let productPicture = [];
-
-        if (req.files && req.files.length > 0) {
-          productPicture = req.files.map((file) => {
-            return { img: file.filename, path: file.path };
-          });
-        }
-        await Product.findOneAndUpdate({_id: req.params.id}, {
-            name: name.toLowerCase(), price, description, content,productPicture , category
-        })
-  
-        res.json({msg: "Updated a Product"})
-    } catch (err) {
-        return res.status(500).json({msg: err.message})
-    }
+    await Product.findByIdAndDelete(req.params.id);
+    res.json({ msg: "Deleted a Product" });
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
   }
+};
 
+const updateProduct = async (req, res) => {
+  try {
+    const { name, price, description, content, category } = req.body;
+
+    let productPicture = [];
+
+    if (req.files && req.files.length > 0) {
+      productPicture = req.files.map((file) => {
+        return { img: file.filename, path: file.path };
+      });
+    }
+    await Product.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        name: name.toLowerCase(),
+        price,
+        description,
+        content,
+        productPicture,
+        category,
+      }
+    );
+
+    res.json({ msg: "Updated a Product" });
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
+  }
+};
 
 module.exports = {
   createProduct,
   getProduct,
   deleteProduct,
-  updateProduct
+  updateProduct,
 };
 
-
-
-
-
-
-
-
-
-async(req, res) =>{
+async (req, res) => {
   try {
-      const {name, price, description, content, productPicture, category} = req.body;
-      if(!iProductPicture) return res.status(400).json({msg: "No image upload"})
+    const { name, price, description, content, productPicture, category } =
+      req.body;
+    if (!iProductPicture)
+      return res.status(400).json({ msg: "No image upload" });
 
-      await Products.findOneAndUpdate({_id: req.params.id}, {
-          name: name.toLowerCase(), price, description, content,productPicture , category
-      })
+    await Products.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        name: name.toLowerCase(),
+        price,
+        description,
+        content,
+        productPicture,
+        category,
+      }
+    );
 
-      res.json({msg: "Updated a Product"})
+    res.json({ msg: "Updated a Product" });
   } catch (err) {
-      return res.status(500).json({msg: err.message})
+    return res.status(500).json({ msg: err.message });
   }
-}
+};

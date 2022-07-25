@@ -96,6 +96,9 @@ const Header = () => {
             sx={{
               cursor: "pointer",
             }}
+            onClick={() => {
+              navigate("/");
+            }}
           >
             <img src={logo} alt='Emart' width='130px' />
           </Box>

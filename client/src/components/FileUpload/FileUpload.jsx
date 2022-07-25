@@ -23,6 +23,7 @@ const FileUpload = ({ name, label }) => {
             type='file'
             hidden
             onBlur={handleBlur}
+            accept='image/*'
             onChange={(event) => {
               setFieldValue(name, event.target.files);
             }}

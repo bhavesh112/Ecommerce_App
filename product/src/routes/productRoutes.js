@@ -21,10 +21,15 @@ router.post(
   createProduct
 );
 
-router.get("/:slug", getProduct);
+router.get("/:category_id", getProduct);
 
-router.delete("/delete/:id",adminAuth, deleteProduct)
+router.delete("/delete/:id", adminAuth, deleteProduct);
 
-router.put("/update/:id", upload.array("productPicture"),adminAuth, updateProduct)
+router.put(
+  "/update/:id",
+  upload.array("productPicture"),
+  adminAuth,
+  updateProduct
+);
 
 module.exports = router;
