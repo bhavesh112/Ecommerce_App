@@ -11,6 +11,7 @@ import ProductPage from "../pages/ProductPage/ProductPage";
 import ProductSearch from "../pages/ProductPage/ProductSearch";
 import ProductCategory from "../pages/ProductPage/ProductCategory";
 import SingleProduct from "../pages/SingleProduct/SingleProduct";
+import Cart from "../pages/Cart/Cart";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -18,6 +19,7 @@ const AllRoutes = () => {
       <Route path='/search' element={<ProductSearch />} />
       <Route path='/products/:category_id' element={<ProductCategory />} />
       <Route path='/product/:product_id' element={<SingleProduct />} />
+      <Route path='/cart' element={<Cart />} />
       <Route
         path='/register'
         element={

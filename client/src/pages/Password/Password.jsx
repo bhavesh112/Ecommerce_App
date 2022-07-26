@@ -11,10 +11,11 @@ import {
   useResetPassword,
 } from "../../services/auth.service";
 import { useParams } from "react-router-dom";
+import FullScreenLoader from "../../components/FullScreenLoader/FullScreenLoader";
 
 const Password = ({ type }) => {
   const { isLoading } = useGetUser();
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <FullScreenLoader />;
   if (type === "forgot") {
     return (
       <>

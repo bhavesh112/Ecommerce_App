@@ -19,15 +19,17 @@ import { useGetUser } from "../../services/auth.service";
 import UserMenu from "../UserMenu/UserMenu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Form, Formik } from "formik";
+import { useGetCartItems } from "../../services/cart.service";
 
 const AuthenticatedHeader = () => {
   const { user, isLoading } = useGetUser();
-
+  const { cartCount } = useGetCartItems();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const navigate = useNavigate();
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -47,8 +49,13 @@ const AuthenticatedHeader = () => {
         </Avatar>
         {user.name.split(" ")[0]}
       </Button>
-      <IconButton color='primary'>
-        <Badge badgeContent={"0"} color='secondary'>
+      <IconButton
+        color='primary'
+        onClick={() => {
+          navigate("/cart");
+        }}
+      >
+        <Badge badgeContent={String(cartCount || 0)} color='secondary'>
           <ShoppingCartIcon />
         </Badge>
       </IconButton>
@@ -84,7 +91,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const { isAuthenticated, user } = useGetUser();
-  console.log(user, isAuthenticated);
+
   return (
     <AppBar position='sticky'>
       <Container>
