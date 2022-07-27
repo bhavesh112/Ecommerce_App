@@ -7,7 +7,6 @@ import { Route, Routes } from "react-router-dom";
 import AuthenticatedRoute from "../hoc/AuthenticatedRoute";
 import AdminRoute from "../hoc/AdminRoute";
 import Settings from "../pages/Settings/Settings";
-import ProductPage from "../pages/ProductPage/ProductPage";
 import ProductSearch from "../pages/ProductPage/ProductSearch";
 import ProductCategory from "../pages/ProductPage/ProductCategory";
 import SingleProduct from "../pages/SingleProduct/SingleProduct";
@@ -16,13 +15,13 @@ import Cart from "../pages/Cart/Cart";
 const AllRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/search" element={<ProductSearch />} />
-      <Route path="/products/:category_id" element={<ProductCategory />} />
-      <Route path="/product/:product_id" element={<SingleProduct />} />
-      <Route path="/cart" element={<Cart />} />
+      <Route path='/' element={<Home />} />
+      <Route path='/search' element={<ProductSearch />} />
+      <Route path='/products/:category_id' element={<ProductCategory />} />
+      <Route path='/product/:product_id' element={<SingleProduct />} />
+      <Route path='/cart' element={<Cart />} />
       <Route
-        path="/register"
+        path='/register'
         element={
           <NotAuthenticatedRoute>
             <Register />
@@ -30,7 +29,7 @@ const AllRoutes = () => {
         }
       />
       <Route
-        path="/login"
+        path='/login'
         element={
           <NotAuthenticatedRoute>
             <Login />
@@ -38,38 +37,38 @@ const AllRoutes = () => {
         }
       />
       <Route
-        path="/change-password"
+        path='/change-password'
         element={
           <AuthenticatedRoute>
-            <Password type="change" />
+            <Password type='change' />
           </AuthenticatedRoute>
         }
       />
       <Route
-        path="/reset-password/:token"
+        path='/reset-password/:token'
         element={
           <NotAuthenticatedRoute>
-            <Password type="reset" />
+            <Password type='reset' />
           </NotAuthenticatedRoute>
         }
       />
       <Route
-        path="/forgot-password"
+        path='/forgot-password'
         element={
           <NotAuthenticatedRoute>
-            <Password type="forgot" />
+            <Password type='forgot' />
           </NotAuthenticatedRoute>
         }
       />
       <Route
-        path="/settings"
+        path='/settings'
         element={
           <AdminRoute>
             <Settings />
           </AdminRoute>
         }
       />
-      <Route path="/checkout" element={<Checkout />} />
+      <Route path='/checkout' element={<Checkout />} />
     </Routes>
   );
 };

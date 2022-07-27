@@ -58,6 +58,7 @@ exports.addItemToCart = async (req, res) => {
 exports.getCartItems = async (req, res) => {
   try {
     const user_id = req.user.id;
+
     const cart = await Cart.findOne({
       user: user_id,
     });
@@ -132,25 +133,4 @@ exports.updateCartItems = async (req, res) => {
   } catch (err) {
     return res.status(500).json({ msg: err.message });
   }
-};
-
-exports.getCartItems = (req, res) => {
-  Cart.findOne({ user: req.user._id })
-    .populate("cartItems.product", "_id name price productPictures")
-    .exec((error, cart) => {
-      if (error) return res.status(400).json({ error });
-      if (cart) {
-        let cartItems = {};
-        cart.cartItems.forEach((item, index) => {
-          cartItems[item.product._id.toString()] = {
-            _id: item.product._id.toString(),
-            name: item.product.name,
-            img: item.product.productPictures[0].img,
-            price: item.product.price,
-            qty: item.quantity,
-          };
-        });
-        res.status(200).json({ cartItems });
-      }
-    });
 };
