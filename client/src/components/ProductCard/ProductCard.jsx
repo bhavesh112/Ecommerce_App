@@ -14,11 +14,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDeleteProductMutation } from "../../services/admin.service";
 import { useGetUser } from "../../services/auth.service";
+import { useAddToCart } from "../../services/cart.service";
 
 const ProductCard = ({ product }) => {
   const { isAdmin } = useGetUser();
   const { deleteProduct } = useDeleteProductMutation();
   const navigate = useNavigate();
+  const { addToCart } = useAddToCart();
   if (!product) return null;
   return (
     <>
@@ -52,8 +54,9 @@ const ProductCard = ({ product }) => {
                 right: "10px",
                 top: "10px",
               }}
-              onClick={() => {
+              onClick={(e) => {
                 deleteProduct(product._id);
+                e.stopPropagation();
               }}
             >
               <Delete />
@@ -132,7 +135,21 @@ const ProductCard = ({ product }) => {
                 justifyContent: "flex-end",
               }}
             >
-              <Button fullWidth color='secondary' variant='contained'>
+              <Button
+                fullWidth
+                color='secondary'
+                variant='contained'
+                onClick={(e) => {
+                  addToCart({
+                    productId: product._id,
+                    quantity: 1,
+                    name: product.name,
+                    price: product.price,
+                    productPicture: product.productPicture,
+                  });
+                  e.stopPropagation();
+                }}
+              >
                 Add to Cart
               </Button>
             </CardActions>

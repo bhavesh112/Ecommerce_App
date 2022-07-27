@@ -4,6 +4,7 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedPriceRange } from "../../modules/products.slice";
 import Delete from "@mui/icons-material/Delete";
+import empty from "./../../assets/images/empty.jpg";
 const ProductPage = ({ products, keyword, productsByPrice }) => {
   const dispatch = useDispatch();
   const { selected_price_range } = useSelector((state) => state.product);
@@ -13,16 +14,26 @@ const ProductPage = ({ products, keyword, productsByPrice }) => {
     : products;
   if (!products?.length)
     return (
-      <Container>
+      <Container
+        sx={{
+          minHeight: "calc(100vh - 64px)",
+          textAlign: "center",
+        }}
+      >
         {" "}
-        <Typography variant='h5' my={2}>
-          {keyword ? `No products found for ${keyword}` : "No products found"}
+        <Typography variant='h5' mt={2} align='center'>
+          {keyword ? `No products found for "${keyword}"` : "No products found"}
         </Typography>
+        <img src={empty} alt='No Products' width='50%' height='auto' />{" "}
       </Container>
     );
   if (!productsToMap.length) {
     return (
-      <Container>
+      <Container
+        sx={{
+          minHeight: "calc(100vh - 64px)",
+        }}
+      >
         <Filters />{" "}
         <Typography variant='h5' my={2}>
           No products found for this price range
@@ -32,7 +43,11 @@ const ProductPage = ({ products, keyword, productsByPrice }) => {
   }
   return (
     <>
-      <Container>
+      <Container
+        sx={{
+          minHeight: "calc(100vh - 64px)",
+        }}
+      >
         <Filters />
         <Typography variant='h5' my={2}>
           {keyword

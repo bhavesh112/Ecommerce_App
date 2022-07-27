@@ -20,7 +20,11 @@ const SingleProduct = () => {
   if (isProductLoading) return null;
   return (
     <>
-      <Container>
+      <Container
+        sx={{
+          minHeight: "calc(100vh - 64px)",
+        }}
+      >
         <Grid container spacing={3} py={3}>
           <Grid item md={4}>
             <Carousel

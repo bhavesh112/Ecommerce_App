@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AllRoutes from "./routes/AllRoutes";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Footer from "./components/Footer/Footer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,6 +21,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Header />
         <AllRoutes />
+        <Footer />
         <ToastContainer theme='colored' />
         <ReactQueryDevtools />
       </QueryClientProvider>

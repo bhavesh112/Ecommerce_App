@@ -12,6 +12,7 @@ const Settings = () => {
       <Container
         sx={{
           mt: 2,
+          minHeight: "calc(100vh - 64px)",
         }}
       >
         <Tabs
