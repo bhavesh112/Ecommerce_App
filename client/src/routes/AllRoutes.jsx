@@ -11,6 +11,7 @@ import ProductPage from "../pages/ProductPage/ProductPage";
 import ProductSearch from "../pages/ProductPage/ProductSearch";
 import ProductCategory from "../pages/ProductPage/ProductCategory";
 import SingleProduct from "../pages/SingleProduct/SingleProduct";
+import Checkout from "../pages/checkout/Checkout";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -66,7 +67,10 @@ const AllRoutes = () => {
           </AdminRoute>
         }
       />
+      <Route path='/checkout' element={<Checkout/>}/>
     </Routes>
+
+    
   );
 };
 
