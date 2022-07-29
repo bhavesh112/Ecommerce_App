@@ -2,6 +2,11 @@ const jwt = require("jsonwebtoken");
 
 module.exports = async function (req, res, next) {
   try {
+    if (!req.header("Authorization")) {
+      return res.status(401).send({
+        error: "You are not logged in",
+      });
+    }
     const token = req.header("Authorization").replace("Bearer ", "");
     if (!token) {
       return res.status(401).json({
