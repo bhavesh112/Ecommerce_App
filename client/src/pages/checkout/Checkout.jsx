@@ -3,12 +3,14 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import { Typography } from "@mui/material";
-import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import * as yup from "yup";
+import { Form, Formik } from "formik";
+import TextInput from "../../components/TextInput/TextInput";
+import Check from "../../components/Check/Check";
+import Box from "@mui/material/Box";
 
 function getsteps() {
   return ["Shipping address", "Payment deatils", "Review Your order"];
@@ -29,157 +31,125 @@ export default function Checkout() {
     switch (steps) {
       case 0:
         return (
-          <>
-            <React.Fragment>
+          <Formik
+            initialValues={{
+              first_name: "",
+              last_name: "",
+              address1: "",
+              address2: "",
+              city: "",
+            }}
+            validationSchema={yup.object().shape({
+              first_name: yup
+                .string()
+                .min(8, "FirstName is too short")
+                .required("FirstName cannot be left blank"),
+              last_name: yup
+                .string()
+                .min(8, "LastName is too short")
+                .required("LastName cannot be left blank"),
+              address1: yup
+                .string()
+                .min(32, "address is too short")
+                .required("address cannot be left blank"),
+              city: yup.string().required("City cannot be left blank"),
+              zip: yup
+                .string()
+                .min(6, "zip is too short")
+                .max(6, "zip is too long")
+                .required("zip cannot be left blank"),
+              country: yup.string().required("country cannot be left blank"),
+            })}
+          >
+            <Form>
               <Typography variant="h6" gutterBottom>
                 Shipping address
               </Typography>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    id="firstName"
-                    name="firstName"
-                    label="First name"
-                    fullWidth
-                    autoComplete="fname"
-                  />
+                  <TextInput name="first_name" label="first Name" />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    id="lastName"
-                    name="lastName"
-                    label="Last name"
-                    fullWidth
-                    autoComplete="lname"
-                  />
+                  <TextInput name="last_name" label="Last name" />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    required
-                    id="address1"
-                    name="address1"
-                    label="Address line 1"
-                    fullWidth
-                    autoComplete="billing address-line1"
-                  />
+                  <TextInput name="address1" label="Address line 1" />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    id="address2"
-                    name="address2"
-                    label="Address line 2"
-                    fullWidth
-                    autoComplete="billing address-line2"
-                  />
+                  <TextInput name="address2" label="Address line 2" />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    id="city"
-                    name="city"
-                    label="City"
-                    fullWidth
-                    autoComplete="billing address-level2"
-                  />
+                  <TextInput name="city" label="City" />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="state"
-                    name="state"
-                    label="State/Province/Region"
-                    fullWidth
-                  />
+                  <TextInput name="state" label="State/Province/Region" />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    id="zip"
-                    name="zip"
-                    label="Zip / Postal code"
-                    fullWidth
-                    autoComplete="billing postal-code"
-                  />
+                  <TextInput name="zip" label="Zip / Postal code" />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    id="country"
-                    name="country"
-                    label="Country"
-                    fullWidth
-                    autoComplete="billing country"
-                  />
+                  <TextInput name="country" label="Country" />
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="secondary"
-                        name="saveAddress"
-                        value="yes"
-                      />
-                    }
+                  <Check
+                    name="saveAddress"
                     label="Use this address for payment details"
                   />
                 </Grid>
               </Grid>
-            </React.Fragment>
-          </>
+            </Form>
+          </Formik>
         );
       case 1:
         return (
-          <>
-            <React.Fragment>
+          <Formik
+            initialValues={{
+              cardName: "",
+              cardNumber: "",
+              expDate: "",
+              cvv: "",
+            }}
+            validationSchema={yup.object().shape({
+              cardName: yup.string().required("Card Name is required"),
+              cardNumber: yup.string().required("Card Number is required"),
+              expDate: yup.string().required("Expiry Date of card is required"),
+              cvv: yup
+                .string()
+                .required("Password is required")
+                .min(3, "Password must be at least 3 characters"),
+            })}
+          >
+            <Form>
               <Typography variant="h6" gutterBottom>
                 Payment method
               </Typography>
-              <Grid container spacing={24}>
+              <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
-                  <TextField
-                    required
-                    id="cardName"
-                    label="Name on card"
-                    fullWidth
-                  />
+                  <TextInput name="cardName" label="Name on card" />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <TextField
-                    required
-                    id="cardNumber"
-                    label="Card number"
-                    fullWidth
-                  />
+                  <TextInput name="cardNumber" label="Card number" />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <TextField
-                    required
-                    id="expDate"
-                    label="Expiry date"
-                    fullWidth
-                  />
+                  <TextInput name="expDate" label="Expiry date" fullWidth />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <TextField
-                    required
-                    id="cvv"
+                  <TextInput
+                    name="cvv"
                     label="CVV"
                     helperText="Last three digits on signature strip"
-                    fullWidth
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox color="secondary" name="saveCard" value="yes" />
-                    }
+                  <Check
+                    name="saveCard"
+                    value="yes"
                     label="Remember credit card details for next time"
                   />
                 </Grid>
               </Grid>
-            </React.Fragment>
-          </>
+            </Form>
+          </Formik>
         );
       case 2:
         return (
@@ -217,52 +187,22 @@ export default function Checkout() {
         <>
           <form>{getStepContent(activeStep)}</form>
 
-          <Button
-            variant="contained"
-            onClick={handleBack}
-            disabled={activeStep === 0}
-          >
-            back
-          </Button>
-          <Button variant="contained" onClick={handleNext}>
-            {activeStep === 2 ? "finish" : "next"}
-          </Button>
+          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+            <Button
+              variant="contained"
+              onClick={handleBack}
+              disabled={activeStep === 0}
+              sx={{ mr: 1 }}
+            >
+              Back
+            </Button>
+            <Box sx={{ flex: "1 1 auto" }} />
+            <Button variant="contained" onClick={handleNext}>
+              {activeStep === 2 ? "finish" : "next"}
+            </Button>
+          </Box>
         </>
       )}
     </Paper>
   );
 }
-
-// <Typography variant="h3" component="h2" align="center" mt={4}>
-// Checkout
-// </Typography>
-// <Formik>
-// <Form>
-// <Grid>
-// <Typography variant="h5" component="h2" mb={2}>
-// Shipping address
-// </Typography>
-// </Grid>
-// <Grid container columnSpacing={2}>
-// <Grid item md={4}>
-// <TextInput name='firstname' label='First Name' variant='standard' />
-// </Grid>
-// <Grid item md={4}>
-// <TextInput name='lastname'  label='Last Name' variant='standard' />
-// </Grid>
-// <Grid item md={8}>
-// <TextInput name='address1' label='Address line 1 *' variant='standard' />
-// </Grid>
-// <Grid item md={8}>
-// <TextInput name='address2'  label='Address line 2'  variant='standard'/>
-// </Grid>
-// <Grid item md={4}>
-// <TextInput  name='city' label='city'  variant='standard'/>
-// </Grid>
-// <Grid item md={2}>
-// <Button type='submit' variant='contained' size='large' fullWidth>
-// </Button>
-// </Grid>
-// </Grid>
-// </Form>
-// </Formik>
