@@ -43,7 +43,7 @@ const SingleProduct = () => {
                       }}
                     >
                       <CardMedia
-                        image={`http://localhost:8000/${item.img}`}
+                        image={`http://localhost:3003/${item.img}`}
                         component='img'
                         height={"400"}
                         sx={{

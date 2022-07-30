@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AllRoutes from "./routes/AllRoutes";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Footer from "./components/Footer/Footer";
-
+import "./styles/App.css";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

@@ -54,7 +54,7 @@ const ProductPage = ({ products, keyword, productsByPrice }) => {
             ? `Showing Results for ${keyword}`
             : `Showing ${products[0].category.name} `}
         </Typography>
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
           {productsToMap.map((product) => (
             <ProductCard product={product}></ProductCard>
           ))}
@@ -71,34 +71,45 @@ const Filters = () => {
 
   return (
     <Box display={"flex"} gap='20px' mt={2} alignItems='center'>
-      <Typography variant='body1'>Price Filters :</Typography>
-      {Object.keys(priceRange).map((price) => (
-        <>
+      <Typography variant='body1' whiteSpace={"nowrap"}>
+        Price Filters :
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          gap: "10px",
+          overflowX: "auto",
+          py: "12px",
+        }}
+      >
+        {Object.keys(priceRange).map((price) => (
+          <>
+            <Chip
+              onClick={() => {
+                dispatch(setSelectedPriceRange(priceRange[price]));
+              }}
+              variant={
+                selected_price_range === priceRange[price]
+                  ? "default"
+                  : "outlined"
+              }
+              color='primary'
+              label={price}
+            />
+          </>
+        ))}
+        {selected_price_range && (
           <Chip
             onClick={() => {
-              dispatch(setSelectedPriceRange(priceRange[price]));
+              dispatch(setSelectedPriceRange(""));
             }}
-            variant={
-              selected_price_range === priceRange[price]
-                ? "default"
-                : "outlined"
-            }
+            variant={selected_price_range ? "outlined" : "disabled"}
             color='primary'
-            label={price}
+            label={"Clear"}
+            icon={<Delete />}
           />
-        </>
-      ))}
-      {selected_price_range && (
-        <Chip
-          onClick={() => {
-            dispatch(setSelectedPriceRange(""));
-          }}
-          variant={selected_price_range ? "outlined" : "disabled"}
-          color='primary'
-          label={"Clear"}
-          icon={<Delete />}
-        />
-      )}
+        )}
+      </Box>
     </Box>
   );
 };

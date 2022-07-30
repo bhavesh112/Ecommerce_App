@@ -42,29 +42,29 @@ const Register = () => {
       >
         <Form>
           <Grid container columnSpacing={2}>
-            <Grid item md={6}>
+            <Grid item md={6} xs={12} sm={6}>
               <TextInput name='first_name' label='First Name' />
             </Grid>
-            <Grid item md={6}>
+            <Grid item md={6} xs={12} sm={6}>
               <TextInput name='last_name' label='Last Name' />
             </Grid>
-            <Grid item md={12}>
+            <Grid item md={12} xs={12} sm={12}>
               <TextInput name='email' label='Email' />
             </Grid>
-            <Grid item md={6}>
+            <Grid item md={6} xs={12} sm={6}>
               <TextInput name='password' type='password' label='Password' />
             </Grid>
-            <Grid item md={6}>
+            <Grid item md={6} xs={12} sm={6}>
               <TextInput
                 name='confirm_password'
                 type='password'
                 label='Confirm Password'
               />
             </Grid>
-            <Grid item md={12}>
+            {/* <Grid item md={12}>
               <Check label='Register as Seller' name='isSeller' />
-            </Grid>
-            <Grid item md={12}>
+            </Grid> */}
+            <Grid item md={12} xs={12} sm={12}>
               <Button type='submit' variant='contained' size='large' fullWidth>
                 {isRegistering ? <CircularProgress /> : "Register"}
               </Button>

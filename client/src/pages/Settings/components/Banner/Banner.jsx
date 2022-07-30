@@ -53,7 +53,7 @@ const Banner = ({ value }) => {
                   }
                 >
                   <ListItemAvatar>
-                    <Avatar src={`http://localhost:8000/${item.img}`} />
+                    <Avatar src={`http://localhost:3003/${item.img}`} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={item.name}

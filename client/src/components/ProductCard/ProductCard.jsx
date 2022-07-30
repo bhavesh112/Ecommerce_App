@@ -24,7 +24,7 @@ const ProductCard = ({ product }) => {
   if (!product) return null;
   return (
     <>
-      <Grid item md={3}>
+      <Grid item md={3} sm={6} xs={12}>
         <Card
           //   sx={{
           //     "&:hover": {
@@ -70,7 +70,7 @@ const ProductCard = ({ product }) => {
             }}
           >
             <CardMedia
-              image={`http://localhost:8000/${product.productPicture[0].img}`}
+              image={`http://localhost:3003/${product.productPicture[0].img}`}
               component='img'
               height='160'
               sx={{

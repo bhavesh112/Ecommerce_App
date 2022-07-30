@@ -5,7 +5,11 @@ const CommonAuthWrapper = ({ children }) => {
   return (
     <Box
       width={"100%"}
-      p={5}
+      p={{
+        xs: 2,
+        sm: 3,
+        md: 5,
+      }}
       sx={{
         backgroundColor: "primary.main",
         minHeight: "calc(100vh - 64px)",
@@ -13,7 +17,11 @@ const CommonAuthWrapper = ({ children }) => {
     >
       <Paper
         sx={{
-          maxWidth: "40%",
+          maxWidth: {
+            xs: "100%",
+            sm: "80%",
+            md: "40%",
+          },
           margin: "auto",
           p: 2,
         }}
@@ -21,7 +29,11 @@ const CommonAuthWrapper = ({ children }) => {
         <Stack
           justifyContent={"center"}
           alignItems={"center"}
-          px={4}
+          px={{
+            xs: 0,
+            sm: 3,
+            md: 4,
+          }}
           pb={2}
           spacing={2}
         >

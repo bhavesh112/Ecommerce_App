@@ -5,6 +5,7 @@ import {
 } from "../../services/page.service";
 import Carousel from "react-material-ui-carousel";
 import CategorySection from "../../components/CategorySection/CategorySection";
+import Search from "../../components/Search/Search";
 const Home = () => {
   const { pageData, isPageLoading } = useGetPageData();
   const { categoryData, isCategoryLoading } = useGetCategoryData();
@@ -32,7 +33,7 @@ const Home = () => {
                 }}
               >
                 <CardMedia
-                  image={`http://localhost:8000/${item.img}`}
+                  image={`http://localhost:3003/${item.img}`}
                   component='img'
                   height={"300"}
                   width={"100%"}

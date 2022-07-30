@@ -10,8 +10,10 @@ import {
   Avatar,
   Skeleton,
   Badge,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+
 import logo from "./../../assets/images/logo.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -20,8 +22,10 @@ import UserMenu from "../UserMenu/UserMenu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Form, Formik } from "formik";
 import { useGetCartItems } from "../../services/cart.service";
+import Search from "../Search/Search";
+import MobileNavigation from "../MobileNavigation/MobileNavigation";
 
-const AuthenticatedHeader = () => {
+export const AuthenticatedHeader = () => {
   const { user, isLoading } = useGetUser();
   const { cartCount } = useGetCartItems();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -33,21 +37,31 @@ const AuthenticatedHeader = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   if (isLoading) return <Skeleton width='200px' variant='text' />;
 
   return (
     <>
-      <Button variant='text' onClick={handleClick}>
+      <Button
+        variant='text'
+        onClick={handleClick}
+        sx={{
+          padding: 0,
+        }}
+      >
         <Avatar
           sx={{
             mr: 1,
-            height: "30px",
-            width: "30px",
+            height: "40px",
+            width: "40px",
           }}
         >
           {user.name.charAt(0)}
         </Avatar>
-        {user.name.split(" ")[0]}
+        <Box fontSize='18px'>
+          {isMobile ? user.name : user.name.split(" ")[0]}
+        </Box>
       </Button>
       <IconButton
         color='primary'
@@ -58,17 +72,21 @@ const AuthenticatedHeader = () => {
         <Badge badgeContent={String(cartCount || 0)} color='secondary'>
           <ShoppingCartIcon />
         </Badge>
+        {isMobile && <Box ml={2}>Cart</Box>}
       </IconButton>
       <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
     </>
   );
 };
-const NotAuthenticatedHeader = () => {
+export const NotAuthenticatedHeader = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <>
       <Button
         variant='outlined'
+        fullWidth={isMobile}
         onClick={() => {
           navigate("/register");
         }}
@@ -77,6 +95,7 @@ const NotAuthenticatedHeader = () => {
       </Button>
       <Button
         variant='contained'
+        fullWidth={isMobile}
         onClick={() => {
           navigate("/login");
         }}
@@ -87,90 +106,66 @@ const NotAuthenticatedHeader = () => {
   );
 };
 const Header = () => {
-  const [search, setSearch] = useState("");
   const navigate = useNavigate();
-
   const { isAuthenticated, user } = useGetUser();
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <AppBar position='sticky'>
       <Container>
         <Toolbar
           sx={{
             justifyContent: "space-between",
+            px: {
+              xs: "0",
+              sm: 1,
+              md: 2,
+            },
           }}
         >
           <Box
             sx={{
               cursor: "pointer",
+              "&> img": {
+                width: {
+                  xs: "100px",
+                  sm: "120px",
+                  md: "130px",
+                },
+              },
             }}
             onClick={() => {
               navigate("/");
             }}
           >
-            <img src={logo} alt='Emart' width='130px' />
+            <img src={logo} alt='Emart' />
           </Box>
-          <Box position={"relative"}>
-            <Formik>
-              <Form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  navigate(`/search?q=${search}`);
+          {!isMobile && (
+            <>
+              <Search />
+              <Toolbar
+                sx={{
+                  gap: {
+                    xs: "0",
+                    sm: "12px",
+                    md: "20px",
+                  },
+                  px: {
+                    xs: "0",
+                    sm: 1,
+                    md: 2,
+                  },
                 }}
               >
-                <TextField
-                  variant='outlined'
-                  placeholder='Search for products, brands and more'
-                  value={search}
-                  name='q'
-                  onChange={(e) => setSearch(e.target.value)}
-                  sx={{
-                    width: "360px",
-                    input: {
-                      height: "42px",
-                      boxSizing: "border-box",
-                      border: "2px solid",
-                      borderColor: "primary.main",
-                      borderRadius: "20px",
-                      pr: "40px",
-                    },
-                    fieldset: {
-                      border: "none",
-                    },
-                  }}
-                />
-                <Zoom in={Boolean(search)}>
-                  <IconButton
-                    color='primary'
-                    sx={{
-                      position: "absolute",
-                      right: "0",
-                      top: "1px",
-                      backgroundColor: "primary.main",
-                      color: "white",
-                      "&:hover": {
-                        backgroundColor: "primary.dark",
-                      },
-                    }}
-                    type='submit'
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </Zoom>
-              </Form>
-            </Formik>
-          </Box>
-          <Toolbar
-            sx={{
-              gap: "20px",
-            }}
-          >
-            {isAuthenticated ? (
-              <AuthenticatedHeader />
-            ) : (
-              <NotAuthenticatedHeader />
-            )}
-          </Toolbar>
+                {isAuthenticated ? (
+                  <AuthenticatedHeader />
+                ) : (
+                  <NotAuthenticatedHeader />
+                )}
+              </Toolbar>
+            </>
+          )}
+          {isMobile && <MobileNavigation />}
         </Toolbar>
       </Container>
     </AppBar>

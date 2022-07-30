@@ -3,8 +3,12 @@ import {
   Card,
   CardMedia,
   Grid,
+  Icon,
+  IconButton,
   Paper,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { useCallback, useState } from "react";
 import Carousel from "react-material-ui-carousel";
@@ -17,6 +21,8 @@ const CartItem = ({ item }) => {
   const [quantity, setQuantity] = useState(item.quantity);
   const { updateCart } = useUpdateCart();
   const { removeFromCart } = useRemoveFromCart();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const updateCartFn = useCallback(
     _.debounce((data) => {
       updateCart(data);
@@ -35,12 +41,16 @@ const CartItem = ({ item }) => {
     <>
       <Paper
         sx={{
-          p: 2,
-          height: "140px",
+          p: {
+            xs: 1,
+            sm: 2,
+            md: 2,
+          },
+          minHeight: "170px",
         }}
       >
         <Grid container spacing={2} height='100%'>
-          <Grid item md={2} height='100%'>
+          <Grid item md={4} sm={4} xs={4} height='100%'>
             <Carousel
               navButtonsAlwaysInvisible
               indicators={false}
@@ -51,25 +61,65 @@ const CartItem = ({ item }) => {
                 <Card
                   sx={{
                     boxShadow: "none",
-                    height: "110px",
+                    minHeight: "140px",
                   }}
                 >
                   <CardMedia
-                    image={`http://localhost:8000/${picture.img}`}
+                    image={`http://localhost:3003/${picture.img}`}
                     component='img'
                     sx={{
                       maxHeight: "100%",
+                      width: "auto",
+                      height: "140px",
+                      mx: "auto",
                     }}
                   />
                 </Card>
               ))}
             </Carousel>
           </Grid>
-          <Grid item md={6}>
-            <Typography variant='h5' mb={2}>
+          <Grid item md={8} sm={8} xs={8}>
+            <Typography
+              variant='h5'
+              mb={1}
+              fontSize={{
+                xs: "16px",
+                sm: "16px",
+                md: "22px",
+              }}
+            >
               {item.name}
             </Typography>
-            <Typography variant='body1' component='label'>
+            <Typography
+              variant='body1'
+              color='secondary'
+              mb={1}
+              fontSize={{
+                xs: "14px",
+                sm: "14px",
+                md: "18px",
+              }}
+              sx={{
+                "& > span.price ": {
+                  color: "#111 !important",
+                },
+              }}
+              fontWeight={"500"}
+            >
+              <span className='price'>Price :</span> ₹{" "}
+              {item.price * item.quantity}
+            </Typography>
+
+            <Typography
+              variant='body1'
+              component='label'
+              fontSize={{
+                xs: "14px",
+                md: "16px",
+                sm: "14px",
+              }}
+              display={"inline-block"}
+            >
               Quantity :{" "}
               <input
                 type='number'
@@ -84,26 +134,15 @@ const CartItem = ({ item }) => {
                 min={1}
               />
             </Typography>
-          </Grid>
-          <Grid item md={4}>
-            <Typography variant='body1' mt={2} mb={1} color='secondary'>
-              ₹ {item.price.toLocaleString("en-IN")} x {quantity} = ₹
-              {(item.price * quantity).toLocaleString("en-IN")}
-            </Typography>
-            <Button
-              variant='outlined'
-              color='error'
-              onClick={() => {
-                removeFromCart(item._id);
+            <IconButton
+              onClick={() => removeFromCart(item._id)}
+              sx={{
+                ml: 2,
               }}
+              color='error'
             >
-              <Delete
-                sx={{
-                  mr: 1,
-                }}
-              />{" "}
-              Remove from cart
-            </Button>
+              <Delete />
+            </IconButton>
           </Grid>
         </Grid>
       </Paper>

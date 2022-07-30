@@ -56,8 +56,20 @@ const Cart = () => {
           minHeight: "calc(100vh - 64px)",
         }}
       >
-        <Grid container spacing={3}>
-          <Grid item md={8}>
+        <Grid
+          container
+          spacing={{
+            xs: 1,
+            sm: 2,
+            md: 3,
+          }}
+          flexDirection={{
+            xs: "column-reverse",
+            sm: "row",
+            md: "row",
+          }}
+        >
+          <Grid item md={8} sm={7} xs={12}>
             <Typography variant='h4' mt={2} mb={2}>
               Items in your cart
             </Typography>
@@ -68,7 +80,7 @@ const Cart = () => {
             </Stack>
           </Grid>
 
-          <Grid item md={4}>
+          <Grid item md={4} sm={5} xs={12}>
             <Typography variant='h4' mt={2} mb={2}>
               Cart Summary
             </Typography>
