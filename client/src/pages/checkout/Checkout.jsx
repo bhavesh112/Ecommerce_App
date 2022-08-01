@@ -11,12 +11,31 @@ import { Form, Formik } from "formik";
 import TextInput from "../../components/TextInput/TextInput";
 import Check from "../../components/Check/Check";
 import Box from "@mui/material/Box";
+import { useGetCartItems } from "../../services/cart.service";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 
 function getsteps() {
   return ["Shipping address", "Payment deatils", "Review Your order"];
 }
+const addresses = [
+  "1 Material-UI Drive",
+  "Reactville",
+  "Anytown",
+  "99999",
+  "USA",
+];
+const payments = [
+  { name: "Card type", detail: "Visa" },
+  { name: "Card holder", detail: "Mr John Smith" },
+  { name: "Card number", detail: "xxxx-xxxx-xxxx-1234" },
+  { name: "Expiry date", detail: "04/2024" },
+];
 
 export default function Checkout() {
+  const { cartItems } = useGetCartItems();
+
   const [activeStep, setActiveStep] = useState(0);
   const steps = getsteps();
 
@@ -111,12 +130,25 @@ export default function Checkout() {
             }}
             validationSchema={yup.object().shape({
               cardName: yup.string().required("Card Name is required"),
-              cardNumber: yup.string().required("Card Number is required"),
-              expDate: yup.string().required("Expiry Date of card is required"),
+              cardNumber: yup
+                .string()
+                .required("Card Number is required")
+                .matches(
+                  /^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/,
+                  "Please enter valid card number "
+                ),
+              expDate: yup
+                .string()
+                .required("Expiry Date of card is required")
+                .matches(
+                  /([0-9]{2})\/([0-9]{2})/,
+                  "Not a valid expiration date. Example: MM/YY"
+                ),
               cvv: yup
                 .string()
                 .required("Password is required")
-                .min(3, "Password must be at least 3 characters"),
+                .min(3, "Password must be at least 3 characters")
+                .matches(/^[1-9]{1}[0-9]{2}$/, "Please enter a valid cvv"),
             })}
           >
             <Form>
@@ -153,12 +185,59 @@ export default function Checkout() {
         );
       case 2:
         return (
-          <>
-            <Typography variant="h1" component="h2">
-              Review Your order
+          <React.Fragment>
+            <Typography variant="h6" gutterBottom>
+              Order summary
             </Typography>
-            ;
-          </>
+
+            <List disablePadding>
+              {cartItems?.map((item) => (
+                <ListItem>
+                  <ListItemText
+                    primary={item.name}
+                    secondary={item.desciption}
+                  />
+                  <Typography variant="body2">{item.price}</Typography>
+                </ListItem>
+              ))}
+              <ListItem>
+                <ListItemText primary="Total" />
+                <Typography variant="subtitle1">
+                  {" "}
+                  {cartItems
+                    .reduce((a, b) => a + b.price * b.quantity, 0)
+                    .toLocaleString("en-IN")}
+                </Typography>
+              </ListItem>
+            </List>
+
+            <Grid container spacing={16}>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="h6" gutterBottom>
+                  Shipping
+                </Typography>
+                <Typography gutterBottom>John Smith</Typography>
+                <Typography gutterBottom>{addresses.join(", ")}</Typography>
+              </Grid>
+              <Grid item container direction="column" xs={12} sm={6}>
+                <Typography variant="h6" gutterBottom>
+                  Payment details
+                </Typography>
+                <Grid container>
+                  {payments.map((payment) => (
+                    <React.Fragment key={payment.name}>
+                      <Grid item xs={6}>
+                        <Typography gutterBottom>{payment.name}</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography gutterBottom>{payment.detail}</Typography>
+                      </Grid>
+                    </React.Fragment>
+                  ))}
+                </Grid>
+              </Grid>
+            </Grid>
+          </React.Fragment>
         );
     }
   }
@@ -171,6 +250,10 @@ export default function Checkout() {
         p: 2,
       }}
     >
+      <Typography component="h1" variant="h4" align="center">
+        Checkout
+      </Typography>
+
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((step, index) => {
           return (
@@ -182,7 +265,14 @@ export default function Checkout() {
       </Stepper>
 
       {activeStep === 3 ? (
-        <Typography align="center">Thankyou For Your order</Typography>
+        <Box mt={4}>
+          <Typography align="center">Thankyou For Your order</Typography>
+          <Typography variant="subtitle1">
+            Your order number is #2001539. We have emailed your order
+            confirmation, and will send you an update when your order has
+            shipped.
+          </Typography>
+        </Box>
       ) : (
         <>
           <form>{getStepContent(activeStep)}</form>
@@ -198,7 +288,7 @@ export default function Checkout() {
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
             <Button variant="contained" onClick={handleNext}>
-              {activeStep === 2 ? "finish" : "next"}
+              {activeStep === 2 ? "Place order" : "next"}
             </Button>
           </Box>
         </>
