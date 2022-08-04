@@ -11,6 +11,7 @@ const insertBanner = async (banner) => {
     page.banners.push(banner);
     await page.save();
   }
+  return page;
 };
 const removeBannerById = async (id) => {
   const banners = await Page.findOne({});

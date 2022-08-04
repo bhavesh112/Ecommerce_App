@@ -9,8 +9,9 @@ const {
 const addBanner = async (req, res) => {
   try {
     const { navigateTo, name } = req.body;
+
     const img = req.file;
-    await insertBanner({
+    const page = await insertBanner({
       img: img.filename,
       navigateTo,
       name,
