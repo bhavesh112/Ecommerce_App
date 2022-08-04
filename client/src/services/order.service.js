@@ -20,7 +20,7 @@ export const useCreateOrderMutation = (handleNext) => {
       return await api.post("/order", order);
     },
     {
-      onSuccess: (data) => {
+      onSuccess: () => {
         toast.success("Order created");
         clearCart();
         handleNext();
