@@ -1,0 +1,87 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "E-Mart API",
+    "description": "E-Mart API Category",
+    "version": "1.0"
+  },
+  "produces": ["application/json"],
+  "host": "localhost:3003",
+  "basePath": "/api/category",
+  "paths": {
+    "/create": {
+      "post": {
+        "x-swagger-router-controller": "controller",
+        "tags": ["Create Category"],
+        "description": "Returns create category from database",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "x-swagger-router-controller": "controller",
+        "tags": ["get category"],
+        "description": "Returns get category",
+        "parameters": [
+          {
+            "required": true,
+            "description": "get the category"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/categoryModel"
+            }
+          }
+        }
+      }
+    },
+
+    "/delete/:id": {
+      "delete": {
+        "x-swagger-router-controller": "controller",
+        "tags": ["Delete category"],
+        "description": "Returns Delete category",
+        "parameters": [
+          {
+            "name": "id",
+            "body": "path",
+            "required": true,
+            "description": "ID of category that we want to find",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/categoryModel"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "categoryModel": {
+      "required": ["name", "slug"],
+      "properties": {
+        "name": {
+          "type": "String",
+          "required": true
+        },
+        "slug": {
+          "type": "String",
+          "required": true
+        }
+      }
+    }
+  }
+}

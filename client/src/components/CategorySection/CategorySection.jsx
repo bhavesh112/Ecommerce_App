@@ -8,12 +8,12 @@ const CategorySection = ({ category }) => {
   return (
     <>
       <Container>
-        <Box display='flex' justifyContent={"space-between"}>
-          <Typography variant='h4' mt={2} gutterBottom>
+        <Box display="flex" justifyContent={"space-between"}>
+          <Typography variant="h4" mt={2} gutterBottom>
             {category.name}
           </Typography>
           <Button
-            variant='text'
+            variant="text"
             onClick={() => {
               navigate(`/products/${category._id}`);
             }}

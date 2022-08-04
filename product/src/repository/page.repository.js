@@ -19,6 +19,7 @@ const removeBannerById = async (id) => {
 };
 const findBanner = async () => {
   const banners = await Page.findOne({});
+  console.log(banners);
   return banners.banners;
 };
 
