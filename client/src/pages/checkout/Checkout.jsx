@@ -16,6 +16,7 @@ import Shipping from "./Forms/Shipping";
 import Payment from "./Forms/Payment";
 import { useSelector } from "react-redux";
 import { Container } from "@mui/system";
+import { useCreateOrderMutation } from "../../services/order.service";
 
 function getsteps() {
   return ["Shipping address", "Payment deatils", "Review Your order"];
@@ -25,6 +26,7 @@ export default function Checkout() {
   const { cartItems } = useGetCartItems();
 
   const [activeStep, setActiveStep] = useState(0);
+
   const { payment, shipping } = useSelector((state) => state.checkout);
   const steps = getsteps();
 
@@ -33,6 +35,14 @@ export default function Checkout() {
   };
   const handleBack = () => {
     setActiveStep(activeStep - 1);
+  };
+  const { createOrder, order_id } = useCreateOrderMutation(handleNext);
+  const handlePlaceOrder = () => {
+    createOrder({
+      totalAmount: cartItems.reduce((a, b) => a + b.price * b.quantity, 0),
+      shipping,
+      cartItems,
+    });
   };
   const payments = useMemo(
     () => [
@@ -147,7 +157,11 @@ export default function Checkout() {
                 Back
               </Button>
               <Box sx={{ flex: "1 1 auto" }} />
-              <Button variant='contained' color='primary' onClick={handleNext}>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={handlePlaceOrder}
+              >
                 Place order
               </Button>
             </Box>
@@ -197,9 +211,7 @@ export default function Checkout() {
               Thankyou For Your order
             </Typography>
             <Typography variant='subtitle1'>
-              Your order number is #2001539. We have emailed your order
-              confirmation, and will send you an update when your order has
-              shipped.
+              Your order id is {order_id}. The order will be delivered soon.
             </Typography>
           </Box>
         ) : (

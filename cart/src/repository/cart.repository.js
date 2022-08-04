@@ -52,10 +52,22 @@ const updateCartItem = async (user, cartId, quantity) => {
     }
   );
 };
-
+const removeAllCartItems = async (user) => {
+  return await Cart.updateOne(
+    {
+      user: user,
+    },
+    {
+      $set: {
+        cartItems: [],
+      },
+    }
+  );
+};
 module.exports = {
   findCartByUserId,
   createNewCart,
   removeItemFromCart,
   updateCartItem,
+  removeAllCartItems,
 };

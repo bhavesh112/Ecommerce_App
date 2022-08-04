@@ -5,6 +5,7 @@ const {
   createNewCart,
   removeItemFromCart,
   updateCartItem,
+  removeAllCartItems,
 } = require("../repository/cart.repository");
 
 exports.addItemToCart = async (req, res) => {
@@ -103,6 +104,20 @@ exports.updateCartItems = async (req, res) => {
       return res.status(400).json({ msg: "Item not found" });
     }
     return res.json({ cart });
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
+  }
+};
+
+exports.removeAllItems = async (req, res) => {
+  try {
+    const user = req.user.id;
+    const cart = await removeAllCartItems(user);
+
+    if (cart.n === 0) {
+      return res.status(400).json({ msg: "No items found" });
+    }
+    return res.json({ msg: "All items removed from cart" });
   } catch (err) {
     return res.status(500).json({ msg: err.message });
   }

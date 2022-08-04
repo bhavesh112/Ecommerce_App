@@ -12,6 +12,7 @@ import ProductCategory from "../pages/ProductPage/ProductCategory";
 import SingleProduct from "../pages/SingleProduct/SingleProduct";
 import Checkout from "../pages/checkout/Checkout";
 import Cart from "../pages/Cart/Cart";
+import Orders from "../pages/Orders/Orders";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -24,6 +25,14 @@ const AllRoutes = () => {
         element={
           <AuthenticatedRoute>
             <Cart />
+          </AuthenticatedRoute>
+        }
+      />
+      <Route
+        path='/orders'
+        element={
+          <AuthenticatedRoute>
+            <Orders />
           </AuthenticatedRoute>
         }
       />

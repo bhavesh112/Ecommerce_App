@@ -73,7 +73,25 @@ export const useUpdateCart = () => {
       },
     }
   );
+
   return {
     updateCart: mutate,
+  };
+};
+
+export const useClearCart = () => {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(
+    async () => {
+      return await api.delete("/cart/removeAll");
+    },
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries(["cart"]);
+      },
+    }
+  );
+  return {
+    clearCart: mutate,
   };
 };

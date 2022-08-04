@@ -6,12 +6,14 @@ import AllRoutes from "./routes/AllRoutes";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Footer from "./components/Footer/Footer";
 import "./styles/App.css";
+import ScrollToTop from "./hoc/ScrollToTop";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       refetchOnMount: false,
       retry: false,
+      staleTime: 5 * 60 * 1000,
     },
   },
 });
@@ -19,9 +21,13 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <Header />
-        <AllRoutes />
-        <Footer />
+        <ScrollToTop>
+          <>
+            <Header />
+            <AllRoutes />
+            <Footer />
+          </>
+        </ScrollToTop>
         <ToastContainer theme='colored' />
         <ReactQueryDevtools />
       </QueryClientProvider>

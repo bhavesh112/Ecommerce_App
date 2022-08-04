@@ -56,6 +56,24 @@ services:
     ports:
       - "4003:27017"
 
+  order:
+    image: capstone/order
+    build: ./orders
+    ports:
+      - "3004:3004"
+    environment:
+      JWT_SECRET: "testsecret"
+      MONGO_URI: "mongodb://order-db:27017/order"
+    depends_on:
+      - order-db
+
+  order-db:
+    image: mongo
+    volumes:
+      - ./order-db:/data/db
+    ports:
+      - "4004:27017"
+
   api-gateway:
     image: capstone/api-gateway
     build: ./api-gateway
@@ -65,6 +83,7 @@ services:
       AUTH: "http://auth:3001"
       CART: "http://cart:3002"
       PRODUCT: "http://product:3003"
+      ORDER: "http://order:3004"
       JWT_SECRET: "testsecret"
     depends_on:
       - auth

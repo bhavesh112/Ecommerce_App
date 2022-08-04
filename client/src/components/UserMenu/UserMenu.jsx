@@ -1,6 +1,7 @@
 import { ListItemIcon, Menu, MenuItem } from "@mui/material";
 import Logout from "@mui/icons-material/Logout";
 import Key from "@mui/icons-material/Key";
+import Shop from "@mui/icons-material/ShoppingBag";
 import Settings from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
@@ -56,6 +57,17 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
           Settings
         </MenuItem>
       )}
+      <MenuItem
+        onClick={() => {
+          navigate("/orders");
+        }}
+      >
+        <ListItemIcon>
+          <Shop fontSize='small' />
+        </ListItemIcon>{" "}
+        Your Orders
+      </MenuItem>
+
       <MenuItem
         onClick={() => {
           navigate("/change-password");

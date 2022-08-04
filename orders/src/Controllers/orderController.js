@@ -12,10 +12,14 @@ exports.addOrder = (req, res) => {
 };
 
 exports.getOrders = (req, res) => {
-  Order.find({ user: req.user.id }).exec((error, orders) => {
-    if (error) return res.status(400).json({ error });
-    if (orders) {
-      res.status(200).json({ orders });
-    }
-  });
+  Order.find({ user: req.user.id })
+    .sort({
+      createdAt: "desc",
+    })
+    .exec((error, orders) => {
+      if (error) return res.status(400).json({ error });
+      if (orders) {
+        res.status(200).json({ orders });
+      }
+    });
 };

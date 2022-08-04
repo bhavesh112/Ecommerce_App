@@ -5,6 +5,7 @@ import TextInput from "../../../components/TextInput/TextInput";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { setPayment } from "../../../modules/checkout.slice";
+import moment from "moment";
 const Payment = (props) => {
   const dispatch = useDispatch();
   const { payment } = useSelector((state) => state.checkout);
@@ -35,7 +36,15 @@ const Payment = (props) => {
           .matches(
             /([0-9]{2})\/([0-9]{2})/,
             "Not a valid expiration date. Example: MM/YY"
-          ),
+          )
+          .test("expDate", "Expiry date is invalid", function (value) {
+            const date = moment(value, "MM/YY");
+            return date.isValid();
+          })
+          .test("expDate", "Expiry date cannot be from past", function (value) {
+            const date = moment(value, "MM/YY");
+            return date.isAfter(moment());
+          }),
         cvv: yup
           .string()
           .required("Password is required")
