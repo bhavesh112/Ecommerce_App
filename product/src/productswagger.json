@@ -1,0 +1,91 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "E-Mart API",
+    "description": "E-Mart API Product",
+    "version": "1.0"
+  },
+  "produces": ["application/json"],
+  "host": "localhost:3003",
+  "basePath": "/api/product",
+  "paths": {
+    "/get-banner": {
+      "get": {
+        "x-swagger-router-controller": "controller",
+        "tags": ["Get all banner"],
+        "description": "Returns all Product from database",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/add-banner/": {
+      "post": {
+        "x-swagger-router-controller": "controller",
+        "tags": ["Post banner"],
+        "description": "Returns Post banners",
+        "parameters": [
+          {
+            "required": true,
+            "description": "Post the banners"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/pageModel"
+            }
+          }
+        }
+      }
+    },
+
+    "/delete-banner/:id": {
+      "delete": {
+        "x-swagger-router-controller": "controller",
+        "tags": ["Delete banner"],
+        "description": "Returns Delete banner",
+        "parameters": [
+          {
+            "name": "id",
+            "body": "path",
+            "required": true,
+            "description": "ID of banner that we want to find",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/pageModel"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "pageModel": {
+      "required": ["name", "img", "navigateTo"],
+      "properties": {
+        "name": {
+          "type": "String",
+          "required": true
+        },
+        "img": {
+          "type": "String",
+          "required": true
+        },
+        "navigateTo": {
+          "type": "String",
+          "required": true
+        }
+      }
+    }
+  }
+}

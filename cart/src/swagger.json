@@ -1,0 +1,130 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "E-Mart Cart API",
+    "description": "Cart API",
+    "version": "1.0"
+  },
+  "produces": ["application/json"],
+  "host": "localhost:3002",
+  "basePath": "/api/cart",
+  "paths": {
+    "/getCartItems": {
+      "get": {
+        "x-swagger-router-controller": "Controllers",
+        "tags": ["Get All Cart Items"],
+        "description": "Returns all cart items from database",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/addtocart": {
+      "post": {
+        "x-swagger-router-controller": "Controllers",
+        "tags": ["Add to Cart Items"],
+
+        "description": "Returns Add to cart items",
+        "parameters": [
+          {
+            "name": "id",
+            "body": "path",
+            "required": true,
+            "description": "ID of user that we want to find",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/cartModel"
+            }
+          }
+        }
+      }
+    },
+    "/remove/{id}": {
+      "delete": {
+        "x-swagger-router-controller": "Controllers",
+        "tags": ["Delete Cart Items"],
+        "description": "Returns Delete to cart items",
+        "parameters": [
+          {
+            "name": "id",
+            "body": "path",
+            "required": true,
+            "description": "ID of user that we want to find",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/cartModel"
+            }
+          }
+        }
+      }
+    },
+    "/update/{id}": {
+      "patch": {
+        "x-swagger-router-controller": "Controllers",
+        "tags": ["Update Cart Items"],
+        "description": "Returns Updated cart items",
+        "parameters": [
+          {
+            "name": "id",
+            "body": "path",
+            "required": true,
+            "description": "ID of user that we want to find",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/cartModel"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "cartModel": {
+      "required": [
+        "user",
+        "productId",
+        "name",
+        "productPicture",
+        "quantity",
+        "price"
+      ],
+      "properties": {
+        "user": {
+          "type": "mongoose.Schema.Types.ObjectId",
+          "required": true
+        },
+
+        "productId": {
+          "type": "mongoose.Schema.Types.ObjectId"
+        },
+        "name": {
+          "type": "String",
+          "required": true
+        },
+        "productPicture": {
+          "img": "String"
+        },
+        "quantity": { "type": "Number", "default": 1 },
+        "price": { "type": "Number", "required": true }
+      }
+    }
+  }
+}

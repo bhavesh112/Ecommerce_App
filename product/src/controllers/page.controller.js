@@ -28,10 +28,11 @@ const getBanners = async (req, res) => {
     const banners = await findBanner();
     res.status(200).json(banners);
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     res.status(500).json("Server internal error!");
   }
 };
+
 const deleteBanner = async (req, res) => {
   try {
     const { id } = req.params;
