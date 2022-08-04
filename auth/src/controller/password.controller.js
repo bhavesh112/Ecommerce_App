@@ -17,7 +17,7 @@ const changePassword = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
-    console.log(user);
+
     const isMatch = await bcrypt.compare(oldPassword, user.password);
     if (!isMatch) {
       return res.status(400).json({ msg: "Invalid credentials" });

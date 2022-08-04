@@ -39,7 +39,7 @@ const AddProduct = ({
             formData.append("price", values.price);
             formData.append("description", values.description);
             formData.append("category", values.category._id);
-            console.log(values.productPicture);
+
             for (let i = 0; i < values.productPicture.length; i++) {
               formData.append("productPicture", values.productPicture[i]);
             }
