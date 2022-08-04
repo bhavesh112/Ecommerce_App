@@ -19,7 +19,14 @@ const AllRoutes = () => {
       <Route path='/search' element={<ProductSearch />} />
       <Route path='/products/:category_id' element={<ProductCategory />} />
       <Route path='/product/:product_id' element={<SingleProduct />} />
-      <Route path='/cart' element={<Cart />} />
+      <Route
+        path='/cart'
+        element={
+          <AuthenticatedRoute>
+            <Cart />
+          </AuthenticatedRoute>
+        }
+      />
       <Route
         path='/register'
         element={
@@ -68,7 +75,14 @@ const AllRoutes = () => {
           </AdminRoute>
         }
       />
-      <Route path='/checkout' element={<Checkout />} />
+      <Route
+        path='/checkout'
+        element={
+          <AuthenticatedRoute>
+            <Checkout />
+          </AuthenticatedRoute>
+        }
+      />
     </Routes>
   );
 };

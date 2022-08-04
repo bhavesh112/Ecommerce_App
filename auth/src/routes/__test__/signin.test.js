@@ -2,7 +2,7 @@ const request = require("supertest");
 const { app } = require("./../../app");
 
 it(`returns a 400 with an invalid email`, async () => {
-  return request(app)
+  await request(app)
     .post("/api/users/signin")
     .send({
       email: "testsadasd",
@@ -11,7 +11,7 @@ it(`returns a 400 with an invalid email`, async () => {
     .expect(400);
 });
 it(`returns a 400 with an invalid password`, async () => {
-  return request(app)
+  await request(app)
     .post("/api/users/signin")
     .send({
       email: "testsadasd",

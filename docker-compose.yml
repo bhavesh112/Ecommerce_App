@@ -48,6 +48,7 @@ services:
       - ./product/src/uploads:/app/src/uploads/
     depends_on:
       - product-db
+
   product-db:
     image: mongo
     volumes:

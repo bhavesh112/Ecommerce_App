@@ -2,14 +2,14 @@ const request = require("supertest");
 const { app } = require("./../../app");
 
 it("returns a 201 on successful signup", async () => {
-  return request(app)
+  return await request(app)
     .post("/api/users/signup")
     .send({ email: "test@test.com", password: "password", name: "test" })
     .expect(201);
 });
 
 it(`returns a 400 with an invalid email`, async () => {
-  return request(app)
+  return await request(app)
     .post("/api/users/signup")
     .send({
       email: "testsadasd",
@@ -19,7 +19,7 @@ it(`returns a 400 with an invalid email`, async () => {
     .expect(400);
 });
 it(`returns a 400 with an invalid password`, async () => {
-  return request(app)
+  return await request(app)
     .post("/api/users/signup")
     .send({
       name: "test",
@@ -37,7 +37,7 @@ it("disallows duplicate emails", async () => {
       password: "password",
     })
     .expect(201);
-  await request(app)
+  return await request(app)
     .post("/api/users/signup")
     .send({
       email: "test@test.com",
@@ -54,5 +54,5 @@ it(`returns a token after successful signup`, async () => {
       password: "password",
     })
     .expect(201);
-  expect(response.body.token).toBeDefined();
+  return expect(response.body.token).toBeDefined();
 });

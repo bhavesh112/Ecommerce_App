@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedPriceRange } from "../../modules/products.slice";
 import Delete from "@mui/icons-material/Delete";
 import empty from "./../../assets/images/empty.jpg";
+import { useAddToCart } from "../../services/cart.service";
 const ProductPage = ({ products, keyword, productsByPrice }) => {
   const dispatch = useDispatch();
   const { selected_price_range } = useSelector((state) => state.product);

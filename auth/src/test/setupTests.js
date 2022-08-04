@@ -6,6 +6,7 @@ const request = require("supertest");
 let mongo;
 beforeAll(async () => {
   mongo = await MongoMemoryServer.create();
+
   const mongoUri = mongo.getUri();
   process.env.JWT_SECRET = "asdfghjkl";
   await mongoose.connect(mongoUri);
@@ -19,10 +20,10 @@ beforeEach(async () => {
   }
 });
 
-afterAll(async () => {
-  await mongo.stop();
-  await mongoose.connection.close();
-});
+// afterAll(async () => {
+//   await mongo.stop();
+//   await mongoose.connection.close();
+// });
 global.signin = async () => {
   const email = "test@test.com";
   const password = "password";

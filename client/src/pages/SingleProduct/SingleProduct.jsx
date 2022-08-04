@@ -11,10 +11,12 @@ import { Container } from "@mui/system";
 import { useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import { useParams } from "react-router-dom";
+import { useAddToCart } from "../../services/cart.service";
 import { useGetProductById } from "../../services/product.service";
 
 const SingleProduct = () => {
   const { product_id } = useParams();
+  const { addToCart } = useAddToCart();
   const [quantity, setQuantity] = useState(1);
   const { product, isProductLoading } = useGetProductById(product_id);
   if (isProductLoading) return null;
@@ -26,7 +28,7 @@ const SingleProduct = () => {
         }}
       >
         <Grid container spacing={3} py={3}>
-          <Grid item md={4}>
+          <Grid item md={4} xs={12}>
             <Carousel
               animation='fade'
               swipe
@@ -101,7 +103,19 @@ const SingleProduct = () => {
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
               />
-              <Button color='secondary' variant='contained'>
+              <Button
+                color='secondary'
+                variant='contained'
+                onClick={() => {
+                  addToCart({
+                    productId: product._id,
+                    quantity: Number(quantity),
+                    name: product.name,
+                    price: product.price,
+                    productPicture: product.productPicture,
+                  });
+                }}
+              >
                 {" "}
                 Add to Cart
               </Button>
