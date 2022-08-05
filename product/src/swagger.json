@@ -11,7 +11,7 @@
   "securityDefinitions": {
     "AuthToken": {
       "type": "apiKey",
-      "name": "authorization",
+      "name": "Authorization",
       "in": "header",
       "description": "The token for authentication"
     }
@@ -99,15 +99,15 @@
       "required": ["name", "img", "navigateTo"],
       "properties": {
         "name": {
-          "type": "String",
+          "type": "string",
           "required": true
         },
         "img": {
-          "type": "String",
+          "type": "string",
           "required": true
         },
         "navigateTo": {
-          "type": "String",
+          "type": "string",
           "required": true
         }
       }

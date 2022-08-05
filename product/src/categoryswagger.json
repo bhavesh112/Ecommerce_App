@@ -110,11 +110,11 @@
       "required": ["name", "slug"],
       "properties": {
         "name": {
-          "type": "String",
+          "type": "string",
           "required": true
         },
         "slug": {
-          "type": "String",
+          "type": "string",
           "required": true
         }
       }

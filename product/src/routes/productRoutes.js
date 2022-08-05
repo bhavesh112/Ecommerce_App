@@ -13,8 +13,10 @@ const swaggerDocument = require("../productswagger.json");
 
 const router = express.Router();
 
-router.use("/api-docs", swaggerUi.serve);
-router.get("/api-docs", swaggerUi.setup(swaggerDocument));
+router.use("/api-docs", swaggerUi.serve, (req, res) => {
+  let html = swaggerUi.generateHTML(swaggerDocument);
+  res.send(html);
+});
 
 const adminAuth = require("../middlewares/auth");
 const validateRequest = require("../middlewares/validateRequest");

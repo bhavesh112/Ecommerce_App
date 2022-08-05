@@ -44,7 +44,9 @@ const productSchema = mongoose.Schema({
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
   },
-  updatedAt: Date,
+  updatedAt: {
+    type: Date,
+  },
 });
 
 productSchema.index({ name: "text", description: "text" });

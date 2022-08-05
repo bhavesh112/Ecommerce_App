@@ -18,9 +18,10 @@ const adminAuth = require("../middlewares/auth");
 
 const { upload } = require("../services/storage");
 
-router.use("/api-docs", swaggerUi.serve);
-router.get("/api-docs", swaggerUi.setup(swaggerDocument));
-
+router.use("/api-docs", swaggerUi.serve, (req, res) => {
+  let html = swaggerUi.generateHTML(swaggerDocument);
+  res.send(html);
+});
 router.post("/add-banner", upload.single("img"), adminAuth, addBanner);
 
 router.get("/get-banners", getBanners);

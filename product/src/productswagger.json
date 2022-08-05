@@ -11,7 +11,7 @@
   "securityDefinitions": {
     "AuthToken": {
       "type": "apiKey",
-      "name": "authorization",
+      "name": "Authorization",
       "in": "header",
       "description": "The token for authentication"
     }
@@ -187,49 +187,41 @@
       ],
       "properties": {
         "name": {
-          "type": "String",
+          "type": "string",
           "required": true,
           "trim": true,
           "index": true
         },
         "slug": {
-          "type": "String",
+          "type": "string",
           "required": true,
           "unique": true
         },
         "price": {
-          "type": "Number",
+          "type": "number",
           "required": true
         },
         "description": {
-          "type": "String",
+          "type": "string",
           "required": true,
           "trim": true,
           "index": true
         },
         "quantity": {
-          "type": "Number",
+          "type": "number",
           "required": true
         },
         "productPicture": [
           {
-            "img": { "type": "String" }
-          }
-        ],
-        "reviews": [
-          {
-            "user_name": "String",
-            "review": "String"
+            "img": { "type": "string" }
           }
         ],
         "category": {
-          "type": "mongoose.Schema.Types.ObjectId",
-          "ref": "Category"
+          "type": "string"
         },
         "createdBy": {
-          "type": "mongoose.Schema.Types.ObjectId"
-        },
-        "updatedAt": "Date"
+          "type": "string"
+        }
       }
     }
   }

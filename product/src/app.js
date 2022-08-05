@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.json());
 
-module.exports = app.use("/api/product", productRoutes);
+app.use("/api/product", productRoutes);
 
 app.use("/api/category", categoryRoutes);
 
