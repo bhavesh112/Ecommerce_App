@@ -11,6 +11,6 @@ router.get("/api-docs", swaggerUi.setup(swaggerDocument));
 
 router.post("/", auth, addOrder);
 
-router.get("/a", auth, getOrders);
+router.get("/", auth, getOrders);
 
 module.exports = router;

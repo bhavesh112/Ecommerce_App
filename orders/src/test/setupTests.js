@@ -1,6 +1,6 @@
 const { MongoMemoryServer } = require("mongodb-memory-server");
 const mongoose = require("mongoose");
-
+const jwt = require("jsonwebtoken");
 let mongo;
 beforeAll(async () => {
   mongo = await MongoMemoryServer.create();
@@ -21,3 +21,14 @@ afterAll(async () => {
   await mongo.stop();
   await mongoose.connection.close();
 });
+
+global.createToken = async () =>
+  await jwt.sign(
+    {
+      user: {
+        id: mongoose.Types.ObjectId(),
+        role: "admin",
+      },
+    },
+    process.env.JWT_SECRET
+  );

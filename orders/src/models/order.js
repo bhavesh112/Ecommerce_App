@@ -12,7 +12,7 @@ const orderSchema = new mongoose.Schema(
     cartItems: [
       {
         productId: {
-          type: mongoose.Types.ObjectId(),
+          type: mongoose.Schema.Types.ObjectId,
         },
         name: {
           type: String,
