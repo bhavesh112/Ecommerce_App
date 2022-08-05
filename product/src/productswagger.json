@@ -115,14 +115,46 @@
         "description": "Returns Create a product",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "in": "formData",
             "required": true,
-            "description": "Post a product",
+            "description": "Product Image",
+            "type": "file",
+            "name": "productPicture"
+          },
+          {
+            "in": "formData",
+            "required": true,
+            "description": "Product Name",
             "type": "string",
-            "schema": {
-              "$ref": "#/definitions/productModel"
-            }
+            "name": "name"
+          },
+          {
+            "in": "formData",
+            "required": true,
+            "description": "Product Description",
+            "type": "string",
+            "name": "description"
+          },
+          {
+            "in": "formData",
+            "required": true,
+            "description": "Price",
+            "type": "string",
+            "name": "price"
+          },
+          {
+            "in": "formData",
+            "required": true,
+            "description": "Id of Category ",
+            "type": "string",
+            "name": "category"
+          },
+          {
+            "in": "formData",
+            "required": true,
+            "description": "Available Quantity",
+            "type": "number",
+            "name": "quantity"
           }
         ],
         "security": [

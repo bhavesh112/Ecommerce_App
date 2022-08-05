@@ -26,7 +26,10 @@
 
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/pageModel"
+            }
           }
         }
       }
@@ -38,13 +41,25 @@
         "description": "Returns Post banners",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "in": "formData",
             "required": true,
-            "description": "Post the banners",
-            "schema": {
-              "$ref": "#/definitions/pageModel"
-            }
+            "name": "img",
+            "type": "file",
+            "description": "Image of banner"
+          },
+          {
+            "in": "formData",
+            "required": true,
+            "name": "navigateTo",
+            "type": "string",
+            "description": "Link of banner"
+          },
+          {
+            "in": "formData",
+            "required": true,
+            "name": "name",
+            "type": "string",
+            "description": "Title of banner"
           }
         ],
 
