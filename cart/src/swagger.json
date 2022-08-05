@@ -6,7 +6,7 @@
     "version": "1.0"
   },
   "produces": ["application/json"],
-  "host": "localhost:3001",
+  "host": "localhost:3002",
   "basePath": "/api/cart",
   "securityDefinitions": {
     "AuthToken": {

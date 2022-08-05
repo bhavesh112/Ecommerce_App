@@ -6,12 +6,12 @@
     "version": "1.0"
   },
   "produces": ["application/json"],
-  "host": "localhost:3002",
+  "host": "localhost:3001",
   "basePath": "/api/users",
   "securityDefinitions": {
     "AuthToken": {
       "type": "apiKey",
-      "name": "authorization",
+      "name": "Authorization",
       "in": "header",
       "description": "The token for authentication"
     }

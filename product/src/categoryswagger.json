@@ -11,7 +11,7 @@
   "securityDefinitions": {
     "AuthToken": {
       "type": "apiKey",
-      "name": "authorization",
+      "name": "Authorization",
       "in": "header",
       "description": "The token for authentication"
     }
