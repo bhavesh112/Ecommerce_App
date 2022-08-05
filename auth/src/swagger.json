@@ -1,0 +1,192 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "E-Mart Auth",
+    "description": "Auth Service",
+    "version": "1.0"
+  },
+  "produces": ["application/json"],
+  "host": "localhost:3002",
+  "basePath": "/api/users",
+  "securityDefinitions": {
+    "AuthToken": {
+      "type": "apiKey",
+      "name": "authorization",
+      "in": "header",
+      "description": "The token for authentication"
+    }
+  },
+  "paths": {
+    "/change-password": {
+      "patch": {
+        "x-swagger-router-controller": "controller",
+        "tags": ["Change Password"],
+        "description": "Returns change password in database",
+        "parameters": [],
+        "schema": {
+          "$ref": "#/definitions/changeModel"
+        },
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/changeModel"
+            }
+          }
+        }
+      }
+    },
+    "/forgot-password": {
+      "post": {
+        "x-swagger-router-controller": "controller",
+        "tags": ["User forgot password"],
+        "description": "User forgot passworl",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Body of user that we want to add",
+            "schema": {
+              "$ref": "#/definitions/forgotModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/forgotModel"
+            }
+          }
+        }
+      }
+    },
+    "/signin": {
+      "post": {
+        "x-swagger-router-controller": "controller",
+        "tags": ["User Signin"],
+        "description": "User Signin using credentials",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Body of user that we want to add",
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/signinModel"
+            },
+            "security": [
+              {
+                "AuthToken": []
+              }
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/signinModel"
+            }
+          }
+        }
+      }
+    },
+    "/signup": {
+      "post": {
+        "x-swagger-router-controller": "controller",
+        "tags": ["User Signup"],
+        "description": "User Signup using credentials",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Body of user that we want to add",
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/signupModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/signupModel"
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "changeModel": {
+      "required": ["oldpassword", "newpassword"],
+      "properties": {
+        "oldpassword": {
+          "type": "string",
+          "uniqueItems": true,
+          "example": "Peter@g123"
+        },
+        "newpassword": {
+          "type": "string",
+          "uniqueItems": true,
+          "example": "Peter@g123"
+        }
+      }
+    },
+
+    "forgotModel": {
+      "required": ["email"],
+      "properties": {
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    },
+    "signupModel": {
+      "required": ["email", "password", "name", "role"],
+      "properties": {
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "password": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "name": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "role": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    },
+    "signinModel": {
+      "required": ["email", "password"],
+      "properties": {
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "password": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

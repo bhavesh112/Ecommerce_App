@@ -8,13 +8,22 @@
   "produces": ["application/json"],
   "host": "localhost:3003",
   "basePath": "/api/page",
+  "securityDefinitions": {
+    "AuthToken": {
+      "type": "apiKey",
+      "name": "authorization",
+      "in": "header",
+      "description": "The token for authentication"
+    }
+  },
   "paths": {
-    "/get-banner": {
+    "/get-banners": {
       "get": {
         "x-swagger-router-controller": "controller",
         "tags": ["Get all banner"],
         "description": "Returns all Product from database",
         "parameters": [],
+
         "responses": {
           "200": {
             "description": "OK"
@@ -29,8 +38,19 @@
         "description": "Returns Post banners",
         "parameters": [
           {
+            "name": "body",
+            "in": "body",
             "required": true,
-            "description": "Post the banners"
+            "description": "Post the banners",
+            "schema": {
+              "$ref": "#/definitions/pageModel"
+            }
+          }
+        ],
+
+        "security": [
+          {
+            "AuthToken": []
           }
         ],
         "responses": {
@@ -56,6 +76,11 @@
             "required": true,
             "description": "ID of banner that we want to find",
             "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "AuthToken": []
           }
         ],
         "responses": {

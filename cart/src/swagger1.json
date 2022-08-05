@@ -1,0 +1,103 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Contact API",
+    "description": "Contact API developed in ExpressJS",
+    "version": "1.0"
+  },
+  "produces": ["application/json"],
+  "host": "localhost:3002",
+  "basePath": "/api/cart",
+  "securityDefinitions": {
+    "AuthToken": {
+      "type": "apiKey",
+      "name": "authorization",
+      "in": "header",
+      "description": "The token for authentication"
+    }
+  },
+  "paths": {
+    "/getCartItem": {
+      "get": {
+        "x-swagger-router-controller": "UserController",
+        "tags": ["Get All Contacts"],
+        "description": "Returns all users from database",
+        "parameters": [],
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/UserModel"
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "x-swagger-router-controller": "UserController",
+        "tags": ["Login using credentials"],
+        "description": "Login using credentials",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Body of user that we want to add",
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/LoginModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "LoginModel": {
+      "required": ["email", "password"],
+      "properties": {
+        "email": {
+          "type": "string",
+          "uniqueItems": true,
+          "example": "Peter@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456"
+        }
+      }
+    },
+    "UserModel": {
+      "required": ["firstname", "lastname", "email", "city", "password"],
+      "properties": {
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "city": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

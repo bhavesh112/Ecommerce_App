@@ -1,0 +1,162 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "E-Mart API",
+    "description": "E-Mart Orders API",
+    "version": "1.0"
+  },
+  "produces": ["application/json"],
+  "host": "localhost:3004",
+  "basePath": "/api/order",
+  "securityDefinitions": {
+    "AuthToken": {
+      "type": "apiKey",
+      "name": "authorization",
+      "in": "header",
+      "description": "The token for authentication"
+    }
+  },
+  "paths": {
+    "/": {
+      "post": {
+        "x-swagger-router-controller": "Controller",
+        "tags": ["Post Order"],
+        "description": "Post order to E-Mart",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Post the order using body",
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/orderModel"
+            }
+          }
+        ],
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/orderModel"
+            }
+          }
+        }
+      }
+    },
+    "/a": {
+      "get": {
+        "x-swagger-router-controller": "Controller",
+        "tags": ["Get order by id"],
+        "description": "Get order from E-Mart",
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Get order by order id",
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/LoginModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "orderModel": {
+      "required": ["firstname", "lastname", "email", "city", "password"],
+      "properties": {
+        "user": {
+          "type": "mongoose.Schema.Types.ObjectId",
+          "required": true
+        },
+        "totalAmount": {
+          "type": "Number",
+          "required": true
+        },
+        "cartItems": [
+          {
+            "productId": {
+              "type": "mongoose.Schema.Types.ObjectId"
+            },
+            "name": {
+              "type": "String",
+              "required": true
+            },
+            "productPicture": [
+              {
+                "img": "String"
+              }
+            ],
+            "quantity": { "type": "Number", "default": 1 },
+            "price": { "type": "Number", "required": true }
+          }
+        ],
+        "shipping": {
+          "first_name": {
+            "type": "String",
+            "required": true
+          },
+          "last_name": {
+            "type": "String",
+            "required": true
+          },
+          "address1": {
+            "type": "String",
+            "required": true
+          },
+          "address2": {
+            "type": "String",
+            "required": true
+          },
+          "city": {
+            "type": "String",
+            "required": true
+          },
+          "state": {
+            "type": "String",
+            "required": true
+          },
+          "country": {
+            "type": "String",
+            "required": true
+          },
+          "zip": {
+            "type": "String",
+            "required": true
+          }
+        },
+        "orderStatus": [
+          {
+            "type": {
+              "type": "String",
+              "enum": ["ordered", "packed", "shipped", "delivered"],
+              "default": "ordered"
+            },
+            "date": {
+              "type": "Date",
+              "default": "Date.now"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

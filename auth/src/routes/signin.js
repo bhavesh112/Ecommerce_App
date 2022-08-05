@@ -9,6 +9,12 @@ const { loginUser, getUser } = require("../controller/user.controller");
 // @desc    Get logged in user
 // @access  Private
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("../swagger.json");
+
+router.use("/api-docs", swaggerUi.serve);
+router.get("/api-docs", swaggerUi.setup(swaggerDocument));
+
 router.get("/signin", auth, getUser);
 
 // @route   POST api/signin

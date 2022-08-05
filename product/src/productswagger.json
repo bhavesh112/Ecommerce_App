@@ -8,13 +8,37 @@
   "produces": ["application/json"],
   "host": "localhost:3003",
   "basePath": "/api/product",
+  "securityDefinitions": {
+    "AuthToken": {
+      "type": "apiKey",
+      "name": "authorization",
+      "in": "header",
+      "description": "The token for authentication"
+    }
+  },
   "paths": {
-    "/get-banner": {
+    "/id/:product_id": {
       "get": {
         "x-swagger-router-controller": "controller",
-        "tags": ["Get all banner"],
+        "tags": ["Get all product by Product_id"],
         "description": "Returns all Product from database",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "required": true,
+            "description": "Body of user that we want to add",
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/productModel"
+            }
+          }
+        ],
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -22,47 +46,125 @@
         }
       }
     },
-    "/add-banner/": {
-      "post": {
+    "/feature": {
+      "get": {
         "x-swagger-router-controller": "controller",
-        "tags": ["Post banner"],
-        "description": "Returns Post banners",
+        "tags": ["Get all product by feature"],
+        "description": "Returns all Product from database",
         "parameters": [
           {
+            "name": "body",
+            "in": "body",
             "required": true,
-            "description": "Post the banners"
+            "description": "Body of user that we want to add",
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/productModel"
+            }
+          }
+        ],
+        "security": [
+          {
+            "AuthToken": []
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/pageModel"
+              "$ref": "#/definitions/productModel"
+            }
+          }
+        }
+      }
+    },
+    "/update/:id": {
+      "get": {
+        "x-swagger-router-controller": "controller",
+        "tags": ["Update the product by id"],
+        "description": "Returns update the product in database",
+
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Body of user that we want to add",
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/productModel"
+            }
+          }
+        ],
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/create": {
+      "post": {
+        "x-swagger-router-controller": "controller",
+        "tags": ["create a product"],
+        "description": "Returns Create a product",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Post a product",
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/productModel"
+            }
+          }
+        ],
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/productModel"
             }
           }
         }
       }
     },
 
-    "/delete-banner/:id": {
+    "/delete/:id": {
       "delete": {
         "x-swagger-router-controller": "controller",
-        "tags": ["Delete banner"],
+        "tags": ["Delete a product by using id"],
         "description": "Returns Delete banner",
         "parameters": [
           {
             "name": "id",
             "body": "path",
             "required": true,
-            "description": "ID of banner that we want to find",
+            "description": "delete product using product id",
             "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "AuthToken": []
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/pageModel"
+              "$ref": "#/definitions/productModel"
             }
           }
         }
@@ -70,21 +172,64 @@
     }
   },
   "definitions": {
-    "pageModel": {
-      "required": ["name", "img", "navigateTo"],
+    "productModel": {
+      "required": [
+        "name",
+        "slug",
+        "price",
+        "description",
+        "quantity",
+        "productPicture",
+        "review",
+        "category",
+        "categoryBy",
+        "updatedAt"
+      ],
       "properties": {
         "name": {
           "type": "String",
+          "required": true,
+          "trim": true,
+          "index": true
+        },
+        "slug": {
+          "type": "String",
+          "required": true,
+          "unique": true
+        },
+        "price": {
+          "type": "Number",
           "required": true
         },
-        "img": {
+        "description": {
           "type": "String",
+          "required": true,
+          "trim": true,
+          "index": true
+        },
+        "quantity": {
+          "type": "Number",
           "required": true
         },
-        "navigateTo": {
-          "type": "String",
-          "required": true
-        }
+        "productPicture": [
+          {
+            "img": { "type": "String" }
+          }
+        ],
+        "reviews": [
+          {
+            "user_name": "String",
+            "review": "String"
+          }
+        ],
+        "category": {
+          "type": "mongoose.Schema.Types.ObjectId",
+          "ref": "Category"
+        },
+        "createdBy": {
+          "type": "mongoose.Schema.Types.ObjectId"
+        },
+        "updatedAt": "Date"
       }
     }
   }

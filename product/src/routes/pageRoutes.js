@@ -10,7 +10,7 @@ const {
 } = require("../controllers/page.controller");
 
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("../pageswagger.json");
+const swaggerDocument = require("../swagger.json");
 
 const router = express.Router();
 

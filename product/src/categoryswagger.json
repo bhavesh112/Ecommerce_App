@@ -8,16 +8,42 @@
   "produces": ["application/json"],
   "host": "localhost:3003",
   "basePath": "/api/category",
+  "securityDefinitions": {
+    "AuthToken": {
+      "type": "apiKey",
+      "name": "authorization",
+      "in": "header",
+      "description": "The token for authentication"
+    }
+  },
   "paths": {
     "/create": {
       "post": {
         "x-swagger-router-controller": "controller",
         "tags": ["Create Category"],
         "description": "Returns create category from database",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Post the banners",
+            "schema": {
+              "$ref": "#/definitions/categoryModel"
+            }
+          }
+        ],
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/categoryModel"
+            }
           }
         }
       }
@@ -31,6 +57,11 @@
           {
             "required": true,
             "description": "get the category"
+          }
+        ],
+        "security": [
+          {
+            "AuthToken": []
           }
         ],
         "responses": {
@@ -56,6 +87,11 @@
             "required": true,
             "description": "ID of category that we want to find",
             "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "AuthToken": []
           }
         ],
         "responses": {

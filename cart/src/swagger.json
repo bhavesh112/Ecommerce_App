@@ -6,15 +6,28 @@
     "version": "1.0"
   },
   "produces": ["application/json"],
-  "host": "localhost:3002",
+  "host": "localhost:3001",
   "basePath": "/api/cart",
+  "securityDefinitions": {
+    "AuthToken": {
+      "type": "apiKey",
+      "name": "authorization",
+      "in": "header",
+      "description": "The token for authentication"
+    }
+  },
   "paths": {
     "/getCartItems": {
       "get": {
-        "x-swagger-router-controller": "Controllers",
+        "x-swagger-router-controller": "cart",
         "tags": ["Get All Cart Items"],
         "description": "Returns all cart items from database",
         "parameters": [],
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -24,17 +37,28 @@
     },
     "/addtocart": {
       "post": {
-        "x-swagger-router-controller": "Controllers",
+        "x-swagger-router-controller": "cart",
         "tags": ["Add to Cart Items"],
 
         "description": "Returns Add to cart items",
         "parameters": [
           {
-            "name": "id",
-            "body": "path",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "description": "ID of user that we want to find",
-            "type": "string"
+            "description": "Body of user that we want to add",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/cartModel"
+                }
+              }
+            }
+          }
+        ],
+        "security": [
+          {
+            "AuthToken": []
           }
         ],
         "responses": {
@@ -61,6 +85,11 @@
             "type": "string"
           }
         ],
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -83,6 +112,11 @@
             "required": true,
             "description": "ID of user that we want to find",
             "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "AuthToken": []
           }
         ],
         "responses": {
@@ -108,12 +142,12 @@
       ],
       "properties": {
         "user": {
-          "type": "mongoose.Schema.Types.ObjectId",
+          "type": "string",
           "required": true
         },
 
         "productId": {
-          "type": "mongoose.Schema.Types.ObjectId"
+          "type": "string"
         },
         "name": {
           "type": "String",

@@ -7,9 +7,12 @@ const {
   getProductbyfeature,
   getProductById,
 } = require("../controllers/product.controller");
+
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("../productswagger.json");
+
 const router = express.Router();
+
 router.use("/api-docs", swaggerUi.serve);
 router.get("/api-docs", swaggerUi.setup(swaggerDocument));
 

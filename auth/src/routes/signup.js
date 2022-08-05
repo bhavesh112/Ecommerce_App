@@ -7,6 +7,11 @@ const { createUser } = require("../controller/user.controller");
 // @route   POST api/signup
 // @desc    Register user
 // @access  Public
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("../swagger.json");
+
+router.use("/api-docs", swaggerUi.serve);
+router.get("/api-docs", swaggerUi.setup(swaggerDocument));
 
 router.post(
   "/signup",

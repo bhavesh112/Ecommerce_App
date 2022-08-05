@@ -1,10 +1,14 @@
 const express = require("express");
 const { body } = require("express-validator");
+
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("../categoryswagger.json");
+const swaggerDocument = require("../swagger.json");
+
 const router = express.Router();
+
 router.use("/api-docs", swaggerUi.serve);
 router.get("/api-docs", swaggerUi.setup(swaggerDocument));
+
 // const categoryValidations = require("../validations/categoryValidations");
 const {
   createCategory,
