@@ -68,14 +68,29 @@ const Orders = () => {
             >
               <Grid container spacing={2}>
                 <Grid item xs={6}>
-                  <Typography gutterBottom color='secondary'>
+                  <Typography
+                    fontSize={{
+                      xs: "12px",
+                      md: "16px",
+                    }}
+                    gutterBottom
+                    color='secondary'
+                  >
                     Order Id : {order._id}
                   </Typography>
                 </Grid>
                 <Grid item xs={6}></Grid>
 
                 <Grid item xs={6}>
-                  <Typography gutterBottom color='primary' fontWeight={600}>
+                  <Typography
+                    gutterBottom
+                    color='primary'
+                    fontWeight={600}
+                    fontSize={{
+                      xs: "12px",
+                      md: "16px",
+                    }}
+                  >
                     Ordered Items :
                   </Typography>
                   <List

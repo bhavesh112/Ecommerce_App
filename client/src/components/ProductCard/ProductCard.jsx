@@ -12,12 +12,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useDeleteProductMutation } from "../../services/admin.service";
 import { useGetUser } from "../../services/auth.service";
 import { useAddToCart } from "../../services/cart.service";
 
 const ProductCard = ({ product }) => {
-  const { isAdmin } = useGetUser();
+  const { isAdmin, isAuthenticated } = useGetUser();
   const { deleteProduct } = useDeleteProductMutation();
   const navigate = useNavigate();
   const { addToCart } = useAddToCart();
@@ -47,6 +48,7 @@ const ProductCard = ({ product }) => {
         >
           {isAdmin && (
             <IconButton
+              title='Delete'
               color='error'
               sx={{
                 position: "absolute",
@@ -140,6 +142,9 @@ const ProductCard = ({ product }) => {
                 color='secondary'
                 variant='contained'
                 onClick={(e) => {
+                  if (!isAuthenticated) {
+                    toast.error("Please login to add to cart");
+                  }
                   addToCart({
                     productId: product._id,
                     quantity: 1,
