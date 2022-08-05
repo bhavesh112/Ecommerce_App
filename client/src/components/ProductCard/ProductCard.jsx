@@ -48,6 +48,7 @@ const ProductCard = ({ product }) => {
         >
           {isAdmin && (
             <IconButton
+              title='Delete'
               color='error'
               sx={{
                 position: "absolute",
