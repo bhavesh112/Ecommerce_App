@@ -11,12 +11,15 @@ import { Container } from "@mui/system";
 import { useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useGetUser } from "../../services/auth.service";
 import { useAddToCart } from "../../services/cart.service";
 import { useGetProductById } from "../../services/product.service";
 
 const SingleProduct = () => {
   const { product_id } = useParams();
   const { addToCart } = useAddToCart();
+  const { isAuthenticated } = useGetUser();
   const [quantity, setQuantity] = useState(1);
   const { product, isProductLoading } = useGetProductById(product_id);
   if (isProductLoading) return null;
@@ -107,6 +110,9 @@ const SingleProduct = () => {
                 color='secondary'
                 variant='contained'
                 onClick={() => {
+                  if (!isAuthenticated) {
+                    toast.error("Please login to add to cart");
+                  }
                   addToCart({
                     productId: product._id,
                     quantity: Number(quantity),
