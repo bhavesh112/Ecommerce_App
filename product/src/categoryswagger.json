@@ -53,12 +53,6 @@
         "x-swagger-router-controller": "controller",
         "tags": ["get category"],
         "description": "Returns get category",
-        "parameters": [
-          {
-            "required": true,
-            "description": "get the category"
-          }
-        ],
         "security": [
           {
             "AuthToken": []

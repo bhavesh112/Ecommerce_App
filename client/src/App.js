@@ -29,7 +29,7 @@ function App() {
           </>
         </ScrollToTop>
         <ToastContainer theme='colored' />
-        <ReactQueryDevtools />
+        {/* <ReactQueryDevtools /> */}
       </QueryClientProvider>
     </>
   );

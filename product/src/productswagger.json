@@ -17,17 +17,17 @@
     }
   },
   "paths": {
-    "/id/:product_id": {
+    "/id/{product_id}": {
       "get": {
         "x-swagger-router-controller": "controller",
-        "tags": ["Get all product by Product_id"],
-        "description": "Returns all Product from database",
+        "tags": ["Gets product by Product Id"],
+        "description": "Returns the required product from the database",
         "parameters": [
           {
-            "name": "id",
-            "in": "body",
+            "name": "product_id",
+            "in": "path",
             "required": true,
-            "description": "Body of user that we want to add",
+            "description": "Id of Product to fetch",
             "type": "string",
             "schema": {
               "$ref": "#/definitions/productModel"
@@ -49,25 +49,17 @@
     "/feature": {
       "get": {
         "x-swagger-router-controller": "controller",
-        "tags": ["Get all product by feature"],
-        "description": "Returns all Product from database",
+        "tags": ["Search product by keyword"],
+        "description": "Search  Product from database",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "description": "Body of user that we want to add",
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/productModel"
-            }
+            "in": "query",
+            "name": "keyword",
+            "description": "Keyword of product to Search",
+            "type": "string"
           }
         ],
-        "security": [
-          {
-            "AuthToken": []
-          }
-        ],
+
         "responses": {
           "200": {
             "description": "OK",
@@ -78,27 +70,23 @@
         }
       }
     },
-    "/update/:id": {
+    "/{category_id}": {
       "get": {
         "x-swagger-router-controller": "controller",
-        "tags": ["Update the product by id"],
-        "description": "Returns update the product in database",
-
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Body of user that we want to add",
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/productModel"
-            }
-          }
-        ],
+        "tags": ["Get all product by Category"],
+        "description": "Returns all Product by Category ",
         "security": [
           {
             "AuthToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "category_id",
+            "in": "path",
+            "required": true,
+            "description": "Category Id",
+            "type": "string"
           }
         ],
         "responses": {
@@ -173,7 +161,7 @@
       }
     },
 
-    "/delete/:id": {
+    "/delete/{id}": {
       "delete": {
         "x-swagger-router-controller": "controller",
         "tags": ["Delete a product by using id"],
@@ -181,7 +169,7 @@
         "parameters": [
           {
             "name": "id",
-            "body": "path",
+            "in": "path",
             "required": true,
             "description": "delete product using product id",
             "type": "string"
